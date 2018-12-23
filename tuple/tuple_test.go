@@ -64,3 +64,19 @@ func TestNewVector(t *testing.T) {
 		t.Error("Expected to have created a vector")
 	}
 }
+
+func TestEqualsWhenTrue(t *testing.T) {
+	tup := NewPoint(1, 2, 3)
+	anotherTup := NewPoint(1, 2, 3)
+	if tup.Equal(anotherTup) != true {
+		t.Error("Expected the two tuples to be equal")
+	}
+}
+
+func TestEqualsWhenFalse(t *testing.T) {
+	tup := NewPoint(1, 2, 3)
+	anotherTup := NewPoint(3, 2, 1)
+	if tup.Equal(anotherTup) != false {
+		t.Error("Expected the two tuples to not be equal")
+	}
+}

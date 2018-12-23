@@ -46,3 +46,11 @@ func (t *Tuple) IsVector() bool {
 	}
 	return false
 }
+
+// Equal will compare an instance of a tuple to another instance of a tuple for equality
+func (t *Tuple) Equal(tup *Tuple) bool {
+	if !float.Equal(t.X, tup.X) || !float.Equal(t.Y, tup.Y) || !float.Equal(t.Z, tup.Z) || !float.Equal(t.W, tup.W) {
+		return false
+	}
+	return true
+}
