@@ -6,6 +6,11 @@ import (
 	"github.com/muzfuz/ray/float"
 )
 
+const (
+	pointW  = 1.0
+	vectorW = 0.0
+)
+
 // Tuple is a representation of either a point in space,
 // or a vector leading to a point in space.
 type Tuple struct {
@@ -21,7 +26,7 @@ func NewPoint(x, y, z float64) *Tuple {
 		X: x,
 		Y: y,
 		Z: z,
-		W: 1.0,
+		W: pointW,
 	}
 }
 
@@ -31,13 +36,13 @@ func NewVector(x, y, z float64) *Tuple {
 		X: x,
 		Y: y,
 		Z: z,
-		W: 0.0,
+		W: vectorW,
 	}
 }
 
 // IsPoint returns true if W is 1.0
 func (t *Tuple) IsPoint() bool {
-	if float.Equal(t.W, 1.0) {
+	if float.Equal(t.W, pointW) {
 		return true
 	}
 	return false
@@ -45,42 +50,44 @@ func (t *Tuple) IsPoint() bool {
 
 // IsVector returns true is W is 0.0
 func (t *Tuple) IsVector() bool {
-	if float.Equal(t.W, 0.0) {
+	if float.Equal(t.W, vectorW) {
 		return true
 	}
 	return false
 }
 
 // Equal will compare an instance of a tuple to another instance of a tuple for equality
-func (t *Tuple) Equal(tup *Tuple) bool {
-	if float.Equal(t.X, tup.X) && float.Equal(t.Y, tup.Y) && float.Equal(t.Z, tup.Z) && float.Equal(t.W, tup.W) {
+func (t *Tuple) Equal(t2 *Tuple) bool {
+	if float.Equal(t.X, t2.X) && float.Equal(t.Y, t2.Y) && float.Equal(t.Z, t2.Z) && float.Equal(t.W, t2.W) {
 		return true
 	}
 	return false
 }
 
 // Add will add the values of two tuples together
-func (t *Tuple) Add(tup *Tuple) (*Tuple, error) {
-	if t.IsPoint() && tup.IsPoint() {
+// Two points cannot be added, as this would result in a W value greater than 1.
+func (t *Tuple) Add(t2 *Tuple) (*Tuple, error) {
+	if t.IsPoint() && t2.IsPoint() {
 		return nil, errors.New("Cannot add two points")
 	}
 	return &Tuple{
-		X: t.X + tup.X,
-		Y: t.Y + tup.Y,
-		Z: t.Z + tup.Z,
-		W: t.W + tup.W,
+		X: t.X + t2.X,
+		Y: t.Y + t2.Y,
+		Z: t.Z + t2.Z,
+		W: t.W + t2.W,
 	}, nil
 }
 
 // Subtract will subtract the values of two tuples
-func (t *Tuple) Subtract(tup *Tuple) (*Tuple, error) {
-	if t.IsVector() && tup.IsPoint() {
+// A point cannot be subtracted from a vector as this would result in a W value less than 0
+func (t *Tuple) Subtract(t2 *Tuple) (*Tuple, error) {
+	if t.IsVector() && t2.IsPoint() {
 		return nil, errors.New("Cannot subtract a point from a vector")
 	}
 	return &Tuple{
-		X: t.X - tup.X,
-		Y: t.Y - tup.Y,
-		Z: t.Z - tup.Z,
-		W: t.W - tup.W,
+		X: t.X - t2.X,
+		Y: t.Y - t2.Y,
+		Z: t.Z - t2.Z,
+		W: t.W - t2.W,
 	}, nil
 }
