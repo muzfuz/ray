@@ -94,3 +94,23 @@ func (t *Tuple) Negate() *Tuple {
 		W: 0 - t.W,
 	}
 }
+
+// Scale will scale the tuple up or down.
+func (t *Tuple) Scale(scalar float64) *Tuple {
+	return &Tuple{
+		X: t.X * scalar,
+		Y: t.Y * scalar,
+		Z: t.Z * scalar,
+		W: t.W * scalar,
+	}
+}
+
+// Divide allows us to scale down the tuple via division
+func (t *Tuple) Divide(divisor float64) *Tuple {
+	return &Tuple{
+		X: t.X / divisor,
+		Y: t.Y / divisor,
+		Z: t.Z / divisor,
+		W: t.W / divisor,
+	}
+}

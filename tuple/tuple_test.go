@@ -155,3 +155,33 @@ func TestNegate(t *testing.T) {
 
 	is.True(negated.Equal(expected))
 }
+
+func TestScaleUp(t *testing.T) {
+	is := assert.New(t)
+	expected := &Tuple{X: 3.5, Y: -7, Z: 10.5, W: -14}
+
+	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
+	scaled := tup.Scale(3.5)
+
+	is.True(scaled.Equal(expected))
+}
+
+func TestScaleDown(t *testing.T) {
+	is := assert.New(t)
+	expected := &Tuple{X: 0.5, Y: -1, Z: 1.5, W: -2}
+
+	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
+	scaled := tup.Scale(0.5)
+
+	is.True(scaled.Equal(expected))
+}
+
+func TestDivide(t *testing.T) {
+	is := assert.New(t)
+	expected := &Tuple{X: 0.5, Y: -1, Z: 1.5, W: -2}
+
+	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
+	divided := tup.Divide(2)
+
+	is.True(divided.Equal(expected))
+}
