@@ -1,5 +1,5 @@
 build:
-	go build -o build/ray
+	go build -o bin/ray
 
 test:
 	go test -cover -race `go list ./... | grep -v /vendor`
