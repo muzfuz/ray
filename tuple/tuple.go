@@ -53,10 +53,10 @@ func (t *Tuple) IsVector() bool {
 
 // Equal will compare an instance of a tuple to another instance of a tuple for equality
 func (t *Tuple) Equal(tup *Tuple) bool {
-	if !float.Equal(t.X, tup.X) || !float.Equal(t.Y, tup.Y) || !float.Equal(t.Z, tup.Z) || !float.Equal(t.W, tup.W) {
-		return false
+	if float.Equal(t.X, tup.X) && float.Equal(t.Y, tup.Y) && float.Equal(t.Z, tup.Z) && float.Equal(t.W, tup.W) {
+		return true
 	}
-	return true
+	return false
 }
 
 // Add will add the values of two tuples together
