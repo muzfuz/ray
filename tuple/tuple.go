@@ -1,6 +1,9 @@
 package tuple
 
-// Tuple is a tuple
+import "github.com/muzfuz/ray/float"
+
+// Tuple is a representation of either a point in space,
+// or a vector leading to a point in space.
 type Tuple struct {
 	X float64
 	Y float64
@@ -30,7 +33,7 @@ func NewVector(x, y, z float64) *Tuple {
 
 // IsPoint returns true if W is 1.0
 func (t *Tuple) IsPoint() bool {
-	if t.W == 1.0 {
+	if float.Equal(t.W, 1.0) {
 		return true
 	}
 	return false
@@ -38,7 +41,7 @@ func (t *Tuple) IsPoint() bool {
 
 // IsVector returns true is W is 0.0
 func (t *Tuple) IsVector() bool {
-	if t.W == 0.0 {
+	if float.Equal(t.W, 0.0) {
 		return true
 	}
 	return false
