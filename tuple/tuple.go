@@ -71,3 +71,16 @@ func (t *Tuple) Add(tup *Tuple) (*Tuple, error) {
 		W: t.W + tup.W,
 	}, nil
 }
+
+// Subtract will subtract the values of two tuples
+func (t *Tuple) Subtract(tup *Tuple) (*Tuple, error) {
+	if t.IsVector() && tup.IsPoint() {
+		return nil, errors.New("Cannot subtract a point from a vector")
+	}
+	return &Tuple{
+		X: t.X - tup.X,
+		Y: t.Y - tup.Y,
+		Z: t.Z - tup.Z,
+		W: t.W - tup.W,
+	}, nil
+}

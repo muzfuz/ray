@@ -96,3 +96,57 @@ func TestAddPointToPoint(t *testing.T) {
 	is.Error(err)
 	is.Nil(newPoint)
 }
+
+func TestSubtractTwoPoints(t *testing.T) {
+	is := assert.New(t)
+	expected := NewVector(-2, -4, -6)
+
+	point1 := NewPoint(3, 2, 1)
+	point2 := NewPoint(5, 6, 7)
+
+	vec, err := point1.Subtract(point2)
+
+	is.NoError(err)
+	is.True(vec.IsVector())
+	is.True(vec.Equal(expected))
+}
+
+func TestSubtractVecFromPoint(t *testing.T) {
+	is := assert.New(t)
+	expected := NewPoint(-2, -4, -6)
+
+	point := NewPoint(3, 2, 1)
+	vec := NewVector(5, 6, 7)
+
+	newPoint, err := point.Subtract(vec)
+
+	is.NoError(err)
+	is.True(newPoint.IsPoint())
+	is.True(newPoint.Equal(expected))
+}
+
+func TestSubtractTwoVectors(t *testing.T) {
+	is := assert.New(t)
+	expected := NewVector(-2, -4, -6)
+
+	vec1 := NewVector(3, 2, 1)
+	vec2 := NewVector(5, 6, 7)
+
+	newVec, err := vec1.Subtract(vec2)
+
+	is.NoError(err)
+	is.True(newVec.IsVector())
+	is.True(newVec.Equal(expected))
+}
+
+func TestSubtractPointFromVec(t *testing.T) {
+	is := assert.New(t)
+
+	point := NewPoint(1, 2, 3)
+	vec := NewVector(4, 5, 6)
+
+	newPoint, err := vec.Subtract(point)
+
+	is.Error(err)
+	is.Nil(newPoint)
+}
