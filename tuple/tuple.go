@@ -1,6 +1,10 @@
 package tuple
 
-import "github.com/muzfuz/ray/float"
+import (
+	"errors"
+
+	"github.com/muzfuz/ray/float"
+)
 
 // Tuple is a representation of either a point in space,
 // or a vector leading to a point in space.
@@ -53,4 +57,17 @@ func (t *Tuple) Equal(tup *Tuple) bool {
 		return false
 	}
 	return true
+}
+
+// Add will add the values of two tuples together
+func (t *Tuple) Add(tup *Tuple) (*Tuple, error) {
+	if t.IsPoint() && tup.IsPoint() {
+		return nil, errors.New("Cannot add two points")
+	}
+	return &Tuple{
+		X: t.X + tup.X,
+		Y: t.Y + tup.Y,
+		Z: t.Z + tup.Z,
+		W: t.W + tup.W,
+	}, nil
 }
