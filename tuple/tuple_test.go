@@ -67,8 +67,9 @@ func TestAddVecToPoint(t *testing.T) {
 	point := NewPoint(3, -2, 5)
 	vec := NewVector(-2, 3, 1)
 
-	newPoint := point.Add(vec)
+	newPoint, err := point.Add(vec)
 
+	is.NoError(err)
 	is.Equal(newPoint, expected)
 }
 
@@ -79,8 +80,9 @@ func TestAddVecToVec(t *testing.T) {
 	vec1 := NewVector(3, -2, 5)
 	vec2 := NewVector(-2, 3, 1)
 
-	newVector := vec1.Add(vec2)
+	newVector, err := vec1.Add(vec2)
 
+	is.NoError(err)
 	is.Equal(newVector, expected)
 }
 
@@ -91,8 +93,9 @@ func TestAddPointToPoint(t *testing.T) {
 	point1 := NewPoint(3, -2, 5)
 	point2 := NewPoint(-2, 3, 1)
 
-	newPoint := point1.Add(point2)
+	newPoint, err := point1.Add(point2)
 
+	is.Error(err)
 	is.Equal(newPoint, expected)
 }
 
