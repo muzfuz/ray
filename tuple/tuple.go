@@ -82,13 +82,17 @@ func (t *Tuple) Add(t2 *Tuple) (*Tuple, error) {
 
 // Subtract will subtract the values of two tuples
 // A point cannot be subtracted from a vector as this would result in a W value less than 0
-func (t *Tuple) Subtract(t2 *Tuple) *Tuple {
-	return &Tuple{
+func (t *Tuple) Subtract(t2 *Tuple) (*Tuple, error) {
+	tup := Tuple{
 		X: t.X - t2.X,
 		Y: t.Y - t2.Y,
 		Z: t.Z - t2.Z,
 		W: t.W - t2.W,
 	}
+	if t.IsVector() && t2.IsPoint() {
+		return &tup, errors.New("cannot subtract a point from a vector")
+	}
+	return &tup, nil
 }
 
 // Negate returns a negated Tuple instance,

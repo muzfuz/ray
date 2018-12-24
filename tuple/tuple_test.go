@@ -70,7 +70,7 @@ func TestAddVecToPoint(t *testing.T) {
 	newPoint, err := point.Add(vec)
 
 	is.NoError(err)
-	is.Equal(newPoint, expected)
+	is.Equal(expected, newPoint)
 }
 
 func TestAddVecToVec(t *testing.T) {
@@ -83,7 +83,7 @@ func TestAddVecToVec(t *testing.T) {
 	newVector, err := vec1.Add(vec2)
 
 	is.NoError(err)
-	is.Equal(newVector, expected)
+	is.Equal(expected, newVector)
 }
 
 func TestAddPointToPoint(t *testing.T) {
@@ -96,7 +96,7 @@ func TestAddPointToPoint(t *testing.T) {
 	newPoint, err := point1.Add(point2)
 
 	is.Error(err)
-	is.Equal(newPoint, expected)
+	is.Equal(expected, newPoint)
 }
 
 func TestSubtractTwoPoints(t *testing.T) {
@@ -106,10 +106,11 @@ func TestSubtractTwoPoints(t *testing.T) {
 	point1 := NewPoint(3, 2, 1)
 	point2 := NewPoint(5, 6, 7)
 
-	vec := point1.Subtract(point2)
+	vec, err := point1.Subtract(point2)
 
+	is.NoError(err)
 	is.True(vec.IsVector())
-	is.Equal(vec, expected)
+	is.Equal(expected, vec)
 }
 
 func TestSubtractVecFromPoint(t *testing.T) {
@@ -119,10 +120,11 @@ func TestSubtractVecFromPoint(t *testing.T) {
 	point := NewPoint(3, 2, 1)
 	vec := NewVector(5, 6, 7)
 
-	newPoint := point.Subtract(vec)
+	newPoint, err := point.Subtract(vec)
 
+	is.NoError(err)
 	is.True(newPoint.IsPoint())
-	is.Equal(newPoint, expected)
+	is.Equal(expected, newPoint)
 }
 
 func TestSubtractTwoVectors(t *testing.T) {
@@ -132,10 +134,11 @@ func TestSubtractTwoVectors(t *testing.T) {
 	vec1 := NewVector(3, 2, 1)
 	vec2 := NewVector(5, 6, 7)
 
-	newVec := vec1.Subtract(vec2)
+	newVec, err := vec1.Subtract(vec2)
 
+	is.NoError(err)
 	is.True(newVec.IsVector())
-	is.Equal(newVec, expected)
+	is.Equal(expected, newVec)
 }
 
 func TestSubtractPointFromVec(t *testing.T) {
@@ -145,9 +148,10 @@ func TestSubtractPointFromVec(t *testing.T) {
 	vec := NewVector(4, 5, 6)
 	point := NewPoint(1, 2, 3)
 
-	newPoint := vec.Subtract(point)
+	newPoint, err := vec.Subtract(point)
 
-	is.Equal(newPoint, expected)
+	is.Error(err)
+	is.Equal(expected, newPoint)
 }
 
 func TestNegate(t *testing.T) {
@@ -157,7 +161,7 @@ func TestNegate(t *testing.T) {
 	point := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	negated := point.Negate()
 
-	is.Equal(negated, expected)
+	is.Equal(expected, negated)
 }
 
 func TestScaleUp(t *testing.T) {
@@ -167,7 +171,7 @@ func TestScaleUp(t *testing.T) {
 	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	scaled := tup.Scale(3.5)
 
-	is.Equal(scaled, expected)
+	is.Equal(expected, scaled)
 }
 
 func TestScaleDown(t *testing.T) {
@@ -177,7 +181,7 @@ func TestScaleDown(t *testing.T) {
 	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	scaled := tup.Scale(0.5)
 
-	is.Equal(scaled, expected)
+	is.Equal(expected, scaled)
 }
 
 func TestDivide(t *testing.T) {
@@ -187,26 +191,26 @@ func TestDivide(t *testing.T) {
 	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	divided := tup.Divide(2)
 
-	is.Equal(divided, expected)
+	is.Equal(expected, divided)
 }
 
 func TestVectorMagnitude(t *testing.T) {
 	is := assert.New(t)
 
 	v := NewVector(1, 0, 0)
-	is.Equal(v.Magnitude(), 1.0)
+	is.Equal(1.0, v.Magnitude())
 
 	v = NewVector(0, 1, 0)
-	is.Equal(v.Magnitude(), 1.0)
+	is.Equal(1.0, v.Magnitude())
 
 	v = NewVector(0, 0, 1)
-	is.Equal(v.Magnitude(), 1.0)
+	is.Equal(1.0, v.Magnitude())
 
 	v = NewVector(1, 2, 3)
-	is.Equal(v.Magnitude(), math.Sqrt(14))
+	is.Equal(math.Sqrt(14), v.Magnitude())
 
 	v = NewVector(-1, -2, -3)
-	is.Equal(v.Magnitude(), math.Sqrt(14))
+	is.Equal(math.Sqrt(14), v.Magnitude())
 }
 
 func TestNormalizingVector(t *testing.T) {
@@ -218,7 +222,7 @@ func TestNormalizingVector(t *testing.T) {
 	v = NewVector(1, 2, 3)
 	normalized := v.Normalize()
 	is.True(normalized.Equal(NewVector(0.26726, 0.53452, 0.80178)))
-	is.Equal(normalized.Magnitude(), 1.0)
+	is.Equal(1.0, normalized.Magnitude())
 }
 
 func TestDotProduct(t *testing.T) {
@@ -227,7 +231,7 @@ func TestDotProduct(t *testing.T) {
 	a := NewVector(1, 2, 3)
 	b := NewVector(2, 3, 4)
 
-	is.Equal(DotProduct(a, b), 20.0)
+	is.Equal(20.0, DotProduct(a, b))
 }
 
 func TestCrossProduct(t *testing.T) {
@@ -236,6 +240,6 @@ func TestCrossProduct(t *testing.T) {
 	a := NewVector(1, 2, 3)
 	b := NewVector(2, 3, 4)
 
-	is.Equal(CrossProduct(a, b), NewVector(-1, 2, -1))
-	is.Equal(CrossProduct(b, a), NewVector(1, -2, 1))
+	is.Equal(NewVector(-1, 2, -1), CrossProduct(a, b))
+	is.Equal(NewVector(1, -2, 1), CrossProduct(b, a))
 }
