@@ -134,3 +134,26 @@ func (t *Tuple) Normalize() *Tuple {
 		W: t.W / mag,
 	}
 }
+
+// DotProduct calculates the scalar value
+// between two vectors.
+// The smaller the dot product, the larger the angle
+// between the two vectors.
+// https://betterexplained.com/articles/vector-calculus-understanding-the-dot-product/
+func DotProduct(a, b *Tuple) float64 {
+	return (a.X * b.X) +
+		(a.Y * b.Y) +
+		(a.Z * b.Z) +
+		(a.W * b.W)
+}
+
+// CrossProduct combines two vectors together
+// and returns a new vector that is prependicular
+// to both of the original vectors.
+func CrossProduct(a, b *Tuple) *Tuple {
+	return NewVector(
+		(a.Y*b.Z)-(a.Z*b.Y),
+		(a.Z*b.X)-(a.X*b.Z),
+		(a.X*b.Y)-(a.Y*b.X),
+	)
+}

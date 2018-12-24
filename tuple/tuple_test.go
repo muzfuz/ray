@@ -217,3 +217,22 @@ func TestNormalizingVector(t *testing.T) {
 	is.True(normalized.Equal(NewVector(0.26726, 0.53452, 0.80178)))
 	is.Equal(normalized.Magnitude(), 1.0)
 }
+
+func TestDotProduct(t *testing.T) {
+	is := assert.New(t)
+
+	a := NewVector(1, 2, 3)
+	b := NewVector(2, 3, 4)
+
+	is.Equal(DotProduct(a, b), 20.0)
+}
+
+func TestCrossProduct(t *testing.T) {
+	is := assert.New(t)
+
+	a := NewVector(1, 2, 3)
+	b := NewVector(2, 3, 4)
+
+	is.Equal(CrossProduct(a, b), NewVector(-1, 2, -1))
+	is.Equal(CrossProduct(b, a), NewVector(1, -2, 1))
+}
