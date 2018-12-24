@@ -1,6 +1,8 @@
 package tuple
 
 import (
+	"math"
+
 	"github.com/muzfuz/ray/float"
 )
 
@@ -113,4 +115,10 @@ func (t *Tuple) Divide(divisor float64) *Tuple {
 		Z: t.Z / divisor,
 		W: t.W / divisor,
 	}
+}
+
+// Magnitude calculates the distance
+// you travel along the whole length of the vector
+func (t *Tuple) Magnitude() float64 {
+	return math.Sqrt((t.X * t.X) + (t.Y * t.Y) + (t.Z * t.Z) + (t.W + t.W))
 }

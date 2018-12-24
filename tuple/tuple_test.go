@@ -1,6 +1,7 @@
 package tuple
 
 import (
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -184,4 +185,23 @@ func TestDivide(t *testing.T) {
 	divided := tup.Divide(2)
 
 	is.True(divided.Equal(expected))
+}
+
+func TestVectorMagnitude(t *testing.T) {
+	is := assert.New(t)
+
+	v := NewVector(1, 0, 0)
+	is.Equal(v.Magnitude(), 1.0)
+
+	v = NewVector(0, 1, 0)
+	is.Equal(v.Magnitude(), 1.0)
+
+	v = NewVector(0, 0, 1)
+	is.Equal(v.Magnitude(), 1.0)
+
+	v = NewVector(1, 2, 3)
+	is.Equal(v.Magnitude(), math.Sqrt(14))
+
+	v = NewVector(-1, -2, -3)
+	is.Equal(v.Magnitude(), math.Sqrt(14))
 }
