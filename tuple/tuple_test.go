@@ -231,7 +231,9 @@ func TestDotProduct(t *testing.T) {
 	a := NewVector(1, 2, 3)
 	b := NewVector(2, 3, 4)
 
-	is.Equal(20.0, DotProduct(a, b))
+	product, err := DotProduct(a, b)
+	is.NoError(err)
+	is.Equal(20.0, product)
 }
 
 func TestCrossProduct(t *testing.T) {
@@ -240,6 +242,11 @@ func TestCrossProduct(t *testing.T) {
 	a := NewVector(1, 2, 3)
 	b := NewVector(2, 3, 4)
 
-	is.Equal(NewVector(-1, 2, -1), CrossProduct(a, b))
-	is.Equal(NewVector(1, -2, 1), CrossProduct(b, a))
+	cross1, err := CrossProduct(a, b)
+	is.NoError(err)
+	is.Equal(NewVector(-1, 2, -1), cross1)
+
+	cross2, err := CrossProduct(a, b)
+	is.NoError(err)
+	is.Equal(NewVector(1, -2, 1), cross2)
 }

@@ -149,20 +149,27 @@ func (t *Tuple) Normalize() *Tuple {
 // The smaller the dot product, the larger the angle
 // between the two vectors.
 // https://betterexplained.com/articles/vector-calculus-understanding-the-dot-product/
-func DotProduct(a, b *Tuple) float64 {
-	return (a.X * b.X) +
+func DotProduct(a, b *Tuple) (float64, error) {
+	if a.IsPoint() || b.IsPoint() {
+		return 0.0, errors.New("cannot calculate dot product on a point")
+	}
+	product := (a.X * b.X) +
 		(a.Y * b.Y) +
 		(a.Z * b.Z) +
 		(a.W * b.W)
+	return product, nil
 }
 
 // CrossProduct combines two vectors together
 // and returns a new vector that is prependicular
 // to both of the original vectors.
-func CrossProduct(a, b *Tuple) *Tuple {
+func CrossProduct(a, b *Tuple) (*Tuple, error) {
+	if a.IsPoint() || b.IsPoint() {
+		return &Tuple{}, errors.New("cannot calculate the cross product on a point")
+	}
 	return NewVector(
 		(a.Y*b.Z)-(a.Z*b.Y),
 		(a.Z*b.X)-(a.X*b.Z),
 		(a.X*b.Y)-(a.Y*b.X),
-	)
+	), nil
 }
