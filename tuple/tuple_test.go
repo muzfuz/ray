@@ -205,3 +205,15 @@ func TestVectorMagnitude(t *testing.T) {
 	v = NewVector(-1, -2, -3)
 	is.Equal(v.Magnitude(), math.Sqrt(14))
 }
+
+func TestNormalizingVector(t *testing.T) {
+	is := assert.New(t)
+
+	v := NewVector(4, 0, 0)
+	is.Equal(v.Normalize(), NewVector(1, 0, 0))
+
+	v = NewVector(1, 2, 3)
+	normalized := v.Normalize()
+	is.True(normalized.Equal(NewVector(0.26726, 0.53452, 0.80178)))
+	is.Equal(normalized.Magnitude(), 1.0)
+}

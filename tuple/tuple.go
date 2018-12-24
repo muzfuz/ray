@@ -122,3 +122,15 @@ func (t *Tuple) Divide(divisor float64) *Tuple {
 func (t *Tuple) Magnitude() float64 {
 	return math.Sqrt((t.X * t.X) + (t.Y * t.Y) + (t.Z * t.Z) + (t.W + t.W))
 }
+
+// Normalize will transform an arbitrary vector
+// into a unit vector
+func (t *Tuple) Normalize() *Tuple {
+	mag := t.Magnitude()
+	return &Tuple{
+		X: t.X / mag,
+		Y: t.Y / mag,
+		Z: t.Z / mag,
+		W: t.W / mag,
+	}
+}
