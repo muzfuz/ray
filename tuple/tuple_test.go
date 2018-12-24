@@ -69,7 +69,7 @@ func TestAddVecToPoint(t *testing.T) {
 
 	newPoint := point.Add(vec)
 
-	is.True(newPoint.Equal(expected))
+	is.Equal(newPoint, expected)
 }
 
 func TestAddVecToVec(t *testing.T) {
@@ -81,7 +81,7 @@ func TestAddVecToVec(t *testing.T) {
 
 	newVector := vec1.Add(vec2)
 
-	is.True(newVector.Equal(expected))
+	is.Equal(newVector, expected)
 }
 
 func TestAddPointToPoint(t *testing.T) {
@@ -93,7 +93,7 @@ func TestAddPointToPoint(t *testing.T) {
 
 	newPoint := point1.Add(point2)
 
-	is.True(newPoint.Equal(expected))
+	is.Equal(newPoint, expected)
 }
 
 func TestSubtractTwoPoints(t *testing.T) {
@@ -106,7 +106,7 @@ func TestSubtractTwoPoints(t *testing.T) {
 	vec := point1.Subtract(point2)
 
 	is.True(vec.IsVector())
-	is.True(vec.Equal(expected))
+	is.Equal(vec, expected)
 }
 
 func TestSubtractVecFromPoint(t *testing.T) {
@@ -119,7 +119,7 @@ func TestSubtractVecFromPoint(t *testing.T) {
 	newPoint := point.Subtract(vec)
 
 	is.True(newPoint.IsPoint())
-	is.True(newPoint.Equal(expected))
+	is.Equal(newPoint, expected)
 }
 
 func TestSubtractTwoVectors(t *testing.T) {
@@ -132,7 +132,7 @@ func TestSubtractTwoVectors(t *testing.T) {
 	newVec := vec1.Subtract(vec2)
 
 	is.True(newVec.IsVector())
-	is.True(newVec.Equal(expected))
+	is.Equal(newVec, expected)
 }
 
 func TestSubtractPointFromVec(t *testing.T) {
@@ -144,7 +144,7 @@ func TestSubtractPointFromVec(t *testing.T) {
 
 	newPoint := vec.Subtract(point)
 
-	is.True(newPoint.Equal(expected))
+	is.Equal(newPoint, expected)
 }
 
 func TestNegate(t *testing.T) {
@@ -154,7 +154,7 @@ func TestNegate(t *testing.T) {
 	point := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	negated := point.Negate()
 
-	is.True(negated.Equal(expected))
+	is.Equal(negated, expected)
 }
 
 func TestScaleUp(t *testing.T) {
@@ -164,7 +164,7 @@ func TestScaleUp(t *testing.T) {
 	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	scaled := tup.Scale(3.5)
 
-	is.True(scaled.Equal(expected))
+	is.Equal(scaled, expected)
 }
 
 func TestScaleDown(t *testing.T) {
@@ -174,7 +174,7 @@ func TestScaleDown(t *testing.T) {
 	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	scaled := tup.Scale(0.5)
 
-	is.True(scaled.Equal(expected))
+	is.Equal(scaled, expected)
 }
 
 func TestDivide(t *testing.T) {
@@ -184,7 +184,7 @@ func TestDivide(t *testing.T) {
 	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	divided := tup.Divide(2)
 
-	is.True(divided.Equal(expected))
+	is.Equal(divided, expected)
 }
 
 func TestVectorMagnitude(t *testing.T) {
