@@ -246,7 +246,7 @@ func TestCrossProduct(t *testing.T) {
 	is.NoError(err)
 	is.Equal(NewVector(-1, 2, -1), cross1)
 
-	cross2, err := CrossProduct(a, b)
+	cross2, err := CrossProduct(b, a)
 	is.NoError(err)
 	is.Equal(NewVector(1, -2, 1), cross2)
 }
