@@ -1,8 +1,6 @@
 package tuple
 
 import (
-	"errors"
-
 	"github.com/muzfuz/ray/float"
 )
 
@@ -25,32 +23,26 @@ func (t *Tuple) Equal(t2 *Tuple) bool {
 
 // Add will add the values of two tuples together
 // Two points cannot be added, as this would result in a W value greater than 1.
-func (t *Tuple) Add(t2 *Tuple) (*Tuple, error) {
+func (t *Tuple) Add(t2 *Tuple) *Tuple {
 	tup := Tuple{
 		X: t.X + t2.X,
 		Y: t.Y + t2.Y,
 		Z: t.Z + t2.Z,
 		W: t.W + t2.W,
 	}
-	if t.IsPoint() && t2.IsPoint() {
-		return &tup, errors.New("cannot add two points together")
-	}
-	return &tup, nil
+	return &tup
 }
 
 // Subtract will subtract the values of two tuples
 // A point cannot be subtracted from a vector as this would result in a W value less than 0
-func (t *Tuple) Subtract(t2 *Tuple) (*Tuple, error) {
+func (t *Tuple) Subtract(t2 *Tuple) *Tuple {
 	tup := Tuple{
 		X: t.X - t2.X,
 		Y: t.Y - t2.Y,
 		Z: t.Z - t2.Z,
 		W: t.W - t2.W,
 	}
-	if t.IsVector() && t2.IsPoint() {
-		return &tup, errors.New("cannot subtract a point from a vector")
-	}
-	return &tup, nil
+	return &tup
 }
 
 // Negate returns a negated Tuple instance,

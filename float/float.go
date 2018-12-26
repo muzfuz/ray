@@ -1,6 +1,8 @@
 package float
 
-import "math"
+import (
+	"math"
+)
 
 const epsilon = 0.00001
 

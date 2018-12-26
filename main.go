@@ -22,18 +22,9 @@ func main() {
 }
 
 func tick(env environment, proj projectile) projectile {
-	position, err := proj.Position.Add(proj.Velocity)
-	if err != nil {
-		fmt.Println(err)
-	}
-	newEnv, err := env.Gravity.Add(env.Wind)
-	if err != nil {
-		fmt.Println(err)
-	}
-	velocity, err := proj.Velocity.Add(newEnv)
-	if err != nil {
-		fmt.Println(err)
-	}
+	position := proj.Position.Add(proj.Velocity)
+	newEnv := env.Gravity.Add(env.Wind)
+	velocity := proj.Velocity.Add(newEnv)
 	return newProjectile(position, velocity)
 }
 
