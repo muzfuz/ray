@@ -50,7 +50,7 @@ func TestAddVecToVec(t *testing.T) {
 
 func TestAddPointToPoint(t *testing.T) {
 	is := assert.New(t)
-	expected := &Tuple{X: 1, Y: 1, Z: 6, W: 2}
+	expected := Tuple{X: 1, Y: 1, Z: 6, W: 2}
 
 	point1 := NewPoint(3, -2, 5)
 	point2 := NewPoint(-2, 3, 1)
@@ -101,7 +101,7 @@ func TestSubtractTwoVectors(t *testing.T) {
 
 func TestSubtractPointFromVec(t *testing.T) {
 	is := assert.New(t)
-	expected := &Tuple{X: 3, Y: 3, Z: 3, W: -1}
+	expected := Tuple{X: 3, Y: 3, Z: 3, W: -1}
 
 	vec := NewVector(4, 5, 6)
 	point := NewPoint(1, 2, 3)
@@ -113,9 +113,9 @@ func TestSubtractPointFromVec(t *testing.T) {
 
 func TestNegate(t *testing.T) {
 	is := assert.New(t)
-	expected := &Tuple{X: -1, Y: 2, Z: -3, W: 4}
+	expected := Tuple{X: -1, Y: 2, Z: -3, W: 4}
 
-	point := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
+	point := Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	negated := point.Negate()
 
 	is.Equal(expected, negated)
@@ -123,9 +123,9 @@ func TestNegate(t *testing.T) {
 
 func TestScaleUp(t *testing.T) {
 	is := assert.New(t)
-	expected := &Tuple{X: 3.5, Y: -7, Z: 10.5, W: -14}
+	expected := Tuple{X: 3.5, Y: -7, Z: 10.5, W: -14}
 
-	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
+	tup := Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	scaled := tup.Scale(3.5)
 
 	is.Equal(expected, scaled)
@@ -133,9 +133,9 @@ func TestScaleUp(t *testing.T) {
 
 func TestScaleDown(t *testing.T) {
 	is := assert.New(t)
-	expected := &Tuple{X: 0.5, Y: -1, Z: 1.5, W: -2}
+	expected := Tuple{X: 0.5, Y: -1, Z: 1.5, W: -2}
 
-	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
+	tup := Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	scaled := tup.Scale(0.5)
 
 	is.Equal(expected, scaled)
@@ -143,9 +143,9 @@ func TestScaleDown(t *testing.T) {
 
 func TestDivide(t *testing.T) {
 	is := assert.New(t)
-	expected := &Tuple{X: 0.5, Y: -1, Z: 1.5, W: -2}
+	expected := Tuple{X: 0.5, Y: -1, Z: 1.5, W: -2}
 
-	tup := &Tuple{X: 1, Y: -2, Z: 3, W: -4}
+	tup := Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	divided := tup.Divide(2)
 
 	is.Equal(expected, divided)

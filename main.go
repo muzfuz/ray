@@ -29,11 +29,11 @@ func tick(env environment, proj projectile) projectile {
 }
 
 type projectile struct {
-	Position *tuple.Tuple // point
-	Velocity *tuple.Tuple // vector
+	Position tuple.Tuple // point
+	Velocity tuple.Tuple // vector
 }
 
-func newProjectile(position, velocity *tuple.Tuple) projectile {
+func newProjectile(position, velocity tuple.Tuple) projectile {
 	return projectile{
 		Position: position,
 		Velocity: velocity,
@@ -41,8 +41,8 @@ func newProjectile(position, velocity *tuple.Tuple) projectile {
 }
 
 type environment struct {
-	Gravity *tuple.Tuple // vector
-	Wind    *tuple.Tuple // vector
+	Gravity tuple.Tuple // vector
+	Wind    tuple.Tuple // vector
 }
 
 func newEnvironment() environment {
