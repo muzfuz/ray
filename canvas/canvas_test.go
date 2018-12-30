@@ -48,3 +48,20 @@ func TestToPPM(t *testing.T) {
 	ppm := canvas.ToPPM()
 	is.Equal(expected, ppm)
 }
+
+func TestPPMSplitLines(t *testing.T) {
+	is := assert.New(t)
+	expected := `P3
+10 2
+255
+255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204
+153 255 204 153 255 204 153 255 204 153 255 204 153
+255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204
+153 255 204 153 255 204 153 255 204 153 255 204 153`
+
+	canvas := NewCanvas(10, 2)
+	canvas.WriteAllPixels(NewColor(1, 0.8, 0.6))
+
+	ppm := canvas.ToPPM()
+	is.Equal(expected, ppm)
+}

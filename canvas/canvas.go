@@ -1,9 +1,9 @@
 package canvas
 
 import (
-	"errors"
 	"fmt"
 	"math"
+	"strings"
 )
 
 // Canvas is a rectangular grid of pixes
@@ -27,12 +27,17 @@ func NewCanvas(w, h int) Canvas {
 }
 
 // WritePixel writes a color to a single pixel
-func (c Canvas) WritePixel(x int, y int, color Color) error {
-	if len(c.pixels) < y || len(c.pixels[0]) < x {
-		return errors.New("given pixel range does not exist in canvas")
-	}
+func (c Canvas) WritePixel(x int, y int, color Color) {
 	c.pixels[y][x] = color
-	return nil
+}
+
+// WriteAllPixels sets the entire canvas to one color
+func (c Canvas) WriteAllPixels(color Color) {
+	for y := range c.pixels {
+		for x := range c.pixels[y] {
+			c.pixels[y][x] = color
+		}
+	}
 }
 
 // PixelAt returns the color of a given x,y coordinate
@@ -42,18 +47,23 @@ func (c Canvas) PixelAt(x, y int) Color {
 
 // ToPPM converts the Canvas to a PPM string
 func (c Canvas) ToPPM() string {
-	ppm := fmt.Sprintf("P3\n%d %d\n255", c.Width, c.Height)
+	ppm := c.ppmHeader()
 	for y := range c.pixels {
-		ppm += "\n"
+		line := ""
 		for x := range c.pixels[y] {
-			c := c.PixelAt(x, y)
 			if x != 0 {
-				ppm += " "
+				line += " "
 			}
-			ppm += toRGBString(c)
+			c := c.PixelAt(x, y)
+			line += toRGBString(c)
 		}
+		ppm += wordWrap(line, 70)
 	}
 	return ppm
+}
+
+func (c Canvas) ppmHeader() string {
+	return fmt.Sprintf("P3\n%d %d\n255", c.Width, c.Height)
 }
 
 // toRGBString converts float values into RGB pixel ints
@@ -70,4 +80,23 @@ func toPixel(f float64) int {
 		return 255
 	}
 	return n
+}
+
+func wordWrap(text string, lineWidth int) string {
+	words := strings.Fields(strings.TrimSpace(text))
+	if len(words) == 0 {
+		return text
+	}
+	wrapped := words[0]
+	spaceLeft := lineWidth - len(wrapped)
+	for _, word := range words[1:] {
+		if len(word)+1 > spaceLeft {
+			wrapped += "\n" + word
+			spaceLeft = lineWidth - len(word)
+		} else {
+			wrapped += " " + word
+			spaceLeft -= 1 + len(word)
+		}
+	}
+	return "\n" + wrapped
 }
