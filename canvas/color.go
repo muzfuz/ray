@@ -1,6 +1,8 @@
 package canvas
 
-import "github.com/muzfuz/ray/tuple"
+import (
+	"github.com/muzfuz/ray/tuple"
+)
 
 // Color is a representation of 3 colors
 type Color struct {

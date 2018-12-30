@@ -26,3 +26,25 @@ func TestWriteAndReadPixel(t *testing.T) {
 	c.WritePixel(2, 3, red)
 	is.Equal(red, c.PixelAt(2, 3))
 }
+
+func TestToPPM(t *testing.T) {
+	is := assert.New(t)
+	expected := `P3
+5 3
+255
+255 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 128 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 255`
+
+	canvas := NewCanvas(5, 3)
+	c1 := NewColor(1.5, 0, 0)
+	c2 := NewColor(0, 0.5, 0)
+	c3 := NewColor(-0.5, 0, 1)
+
+	canvas.WritePixel(0, 0, c1)
+	canvas.WritePixel(2, 1, c2)
+	canvas.WritePixel(4, 2, c3)
+
+	ppm := canvas.ToPPM()
+	is.Equal(expected, ppm)
+}

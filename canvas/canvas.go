@@ -1,6 +1,10 @@
 package canvas
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+	"math"
+)
 
 // Canvas is a rectangular grid of pixes
 type Canvas struct {
@@ -34,4 +38,36 @@ func (c Canvas) WritePixel(x int, y int, color Color) error {
 // PixelAt returns the color of a given x,y coordinate
 func (c Canvas) PixelAt(x, y int) Color {
 	return c.pixels[y][x]
+}
+
+// ToPPM converts the Canvas to a PPM string
+func (c Canvas) ToPPM() string {
+	ppm := fmt.Sprintf("P3\n%d %d\n255", c.Width, c.Height)
+	for y := range c.pixels {
+		ppm += "\n"
+		for x := range c.pixels[y] {
+			c := c.PixelAt(x, y)
+			if x != 0 {
+				ppm += " "
+			}
+			ppm += toRGBString(c)
+		}
+	}
+	return ppm
+}
+
+// toRGBString converts float values into RGB pixel ints
+func toRGBString(c Color) string {
+	return fmt.Sprintf("%d %d %d", toPixel(c.R()), toPixel(c.G()), toPixel(c.B()))
+}
+
+func toPixel(f float64) int {
+	n := int(math.Round(f * 255.0))
+	if n < 0 {
+		return 0
+	}
+	if n > 255 {
+		return 255
+	}
+	return n
 }
