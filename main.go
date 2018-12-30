@@ -10,24 +10,27 @@ import (
 )
 
 func main() {
-	c := canvas.NewCanvas(100, 100)
-	c.WriteAllPixels(canvas.NewColor(0.5, 0.8, 1))
+	fmt.Println("setting up environment...")
+	c := canvas.NewCanvas(900, 550)
+	red := canvas.NewColor(1, 0, 0)
+
+	e := newEnvironment()
+	p := newProjectile(tuple.NewPoint(0, 250, 0), tuple.NewVector(2, 1, 0).Normalize().Scale(8))
+
+	fmt.Println("running simulation...")
+	for {
+		if p.Position.Y <= 0 {
+			break
+		}
+		x, y := convertCoordinates(c.Height, p.Position)
+		c.WritePixel(x, y, red)
+		p = tick(e, p)
+	}
+
+	fmt.Println("writing to file...")
 	err := ioutil.WriteFile("tmp/canvas.bmp", []byte(c.ToPPM()), 0664)
 	if err != nil {
 		fmt.Println(err)
-	}
-
-	p := newProjectile(tuple.NewPoint(0, 1, 0), tuple.NewVector(1, 1, 0).Normalize())
-	e := newEnvironment()
-	t := 0
-	for {
-		fmt.Println(p.Position)
-		t++
-		if p.Position.Y <= 0 {
-			fmt.Print("\nhit the ground after ", t, " hits")
-			break
-		}
-		p = tick(e, p)
 	}
 }
 
@@ -36,6 +39,10 @@ func tick(env environment, proj projectile) projectile {
 	newEnv := env.Gravity.Add(env.Wind)
 	velocity := proj.Velocity.Add(newEnv)
 	return newProjectile(position, velocity)
+}
+
+func convertCoordinates(height int, position tuple.Tuple) (int, int) {
+	return int(position.X), height - int(position.Y)
 }
 
 type projectile struct {

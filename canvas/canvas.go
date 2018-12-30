@@ -28,6 +28,10 @@ func NewCanvas(w, h int) Canvas {
 
 // WritePixel writes a color to a single pixel
 func (c Canvas) WritePixel(x int, y int, color Color) {
+	if x > c.Width-1 || y > c.Height-1 || x < 0 || y < 0 {
+		return
+	}
+	fmt.Println(x, y)
 	c.pixels[y][x] = color
 }
 
