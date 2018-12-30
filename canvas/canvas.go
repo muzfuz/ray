@@ -5,7 +5,12 @@ import (
 	"strings"
 )
 
-// Canvas is a rectangular grid of pixes
+// Canvas is a rectangular grid of pixels
+// The origin of the canvas (0,0) is at the top left, which means that
+// as we traverse the Y axis we move vertically downward.
+// If we want to visually represent our canvas, then
+// and writes to the Y coordinates have to be inverted
+// by subtracting their value from the height of the canvas.
 type Canvas struct {
 	Width  int
 	Height int
