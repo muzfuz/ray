@@ -59,7 +59,7 @@ func (c Canvas) ToPPM() string {
 		}
 		ppm += wordWrap(line, 70)
 	}
-	return ppm
+	return ppm + "\n"
 }
 
 func (c Canvas) ppmHeader() string {
