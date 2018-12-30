@@ -2,7 +2,6 @@ package canvas
 
 import (
 	"fmt"
-	"math"
 	"strings"
 )
 
@@ -58,8 +57,7 @@ func (c Canvas) ToPPM() string {
 			if x != 0 {
 				line += " "
 			}
-			c := c.PixelAt(x, y)
-			line += toRGBString(c)
+			line += c.PixelAt(x, y).toRGBString()
 		}
 		ppm += wordWrap(line, 70)
 	}
@@ -68,22 +66,6 @@ func (c Canvas) ToPPM() string {
 
 func (c Canvas) ppmHeader() string {
 	return fmt.Sprintf("P3\n%d %d\n255", c.Width, c.Height)
-}
-
-// toRGBString converts float values into RGB pixel ints
-func toRGBString(c Color) string {
-	return fmt.Sprintf("%d %d %d", toPixel(c.R()), toPixel(c.G()), toPixel(c.B()))
-}
-
-func toPixel(f float64) int {
-	n := int(math.Round(f * 255.0))
-	if n < 0 {
-		return 0
-	}
-	if n > 255 {
-		return 255
-	}
-	return n
 }
 
 func wordWrap(text string, lineWidth int) string {

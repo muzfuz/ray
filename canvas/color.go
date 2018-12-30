@@ -1,6 +1,9 @@
 package canvas
 
 import (
+	"fmt"
+	"math"
+
 	"github.com/muzfuz/ray/tuple"
 )
 
@@ -61,4 +64,20 @@ func (c Color) Multiply(c2 Color) Color {
 		c.G()*c2.G(),
 		c.B()*c2.B(),
 	)
+}
+
+// toRGBString converts float values into RGB pixel ints
+func (c Color) toRGBString() string {
+	return fmt.Sprintf("%d %d %d", toPixel(c.R()), toPixel(c.G()), toPixel(c.B()))
+}
+
+func toPixel(f float64) int {
+	n := int(math.Round(f * 255.0))
+	if n < 0 {
+		return 0
+	}
+	if n > 255 {
+		return 255
+	}
+	return n
 }
