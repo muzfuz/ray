@@ -17,3 +17,18 @@ func NewMatrix(d [][]float64) Matrix {
 func (m Matrix) At(r, c int) float64 {
 	return m.data[r][c]
 }
+
+// Equal will compare two instances and return true if they are the same
+func (m Matrix) Equal(m2 Matrix) bool {
+	if len(m.data) != len(m2.data) || len(m.data[0]) != len(m2.data[0]) {
+		return false
+	}
+	for r := range m.data {
+		for c := range m.data[r] {
+			if m.data[r][c] != m2.data[r][c] {
+				return false
+			}
+		}
+	}
+	return true
+}
