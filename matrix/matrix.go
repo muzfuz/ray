@@ -2,6 +2,9 @@ package matrix
 
 import (
 	"errors"
+	"fmt"
+
+	"github.com/muzfuz/ray/tuple"
 
 	"github.com/muzfuz/ray/float"
 )
@@ -12,11 +15,11 @@ type Matrix [][]float64
 
 // NewMatrix constructs a new matrix
 func NewMatrix(rows, columns int) Matrix {
-	rc := make([][]float64, rows)
-	for i := range rc {
-		rc[i] = make([]float64, columns)
+	mat := make(Matrix, rows)
+	for c := range mat {
+		mat[c] = make([]float64, columns)
 	}
-	return Matrix(rc)
+	return mat
 }
 
 // At retrieves the values at a given row / column coordinate
@@ -41,10 +44,11 @@ func (m Matrix) Equal(m2 Matrix) bool {
 
 // Multiply will take two matrices and multiply them
 func (m Matrix) Multiply(m2 Matrix) (Matrix, error) {
-	if m.rows() != m2.cols() {
+	if m.cols() != m2.rows() {
 		return Matrix{}, errors.New("cannot multiply two matrices with differing row + column sizes")
 	}
 	newMat := NewMatrix(m.rows(), m2.cols())
+	fmt.Println(newMat)
 	for r := range m {
 		for c := range m2[r] {
 			for i := 0; i < m.rows(); i++ { // uses m.rows() as delimiter, but could also use m2.cols()
@@ -53,6 +57,27 @@ func (m Matrix) Multiply(m2 Matrix) (Matrix, error) {
 		}
 	}
 	return newMat, nil
+}
+
+// MultiplyTuple multiplies the matrix by a tuple
+func (m Matrix) MultiplyTuple(v tuple.Tuple) (tuple.Tuple, error) {
+	colMat := NewMatrix(4, 1)
+	colMat = Matrix{
+		{v.X},
+		{v.Y},
+		{v.Z},
+		{v.W},
+	}
+	mat, err := m.Multiply(colMat)
+	if err != nil {
+		return tuple.Tuple{}, err
+	}
+	return tuple.Tuple{
+		X: mat[0][0],
+		Y: mat[1][0],
+		Z: mat[2][0],
+		W: mat[3][0],
+	}, nil
 }
 
 func (m Matrix) rows() int {

@@ -3,6 +3,8 @@ package matrix
 import (
 	"testing"
 
+	"github.com/muzfuz/ray/tuple"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -10,7 +12,7 @@ func TestNewMatrix(t *testing.T) {
 	is := assert.New(t)
 
 	m := NewMatrix(4, 4)
-	m = [][]float64{
+	m = Matrix{
 		{1, 2, 3, 4},
 		{5.5, 6.5, 7.5, 8.5},
 		{9, 10, 11, 12},
@@ -26,7 +28,7 @@ func TestNewMatrix(t *testing.T) {
 	is.Equal(15.5, m.At(3, 2))
 
 	m2 := NewMatrix(2, 2)
-	m2 = [][]float64{
+	m2 = Matrix{
 		{-3, 5},
 		{1, -2},
 	}
@@ -36,7 +38,7 @@ func TestNewMatrix(t *testing.T) {
 	is.Equal(-2.0, m2.At(1, 1))
 
 	m3 := NewMatrix(3, 3)
-	m3 = [][]float64{
+	m3 = Matrix{
 		{-3, 5, 0},
 		{1, -2, -7},
 		{0, 1, 1},
@@ -49,24 +51,21 @@ func TestNewMatrix(t *testing.T) {
 func TestEqual(t *testing.T) {
 	is := assert.New(t)
 
-	a := NewMatrix(4, 4)
-	a = [][]float64{
+	a := Matrix{
 		{1, 2, 3, 4},
 		{5, 6, 7, 8},
 		{9, 8, 7, 6},
 		{5, 4, 3, 2},
 	}
 
-	b := NewMatrix(4, 4)
-	b = [][]float64{
+	b := Matrix{
 		{1, 2, 3, 4},
 		{5, 6, 7, 8},
 		{9, 8, 7, 6},
 		{5, 4, 3, 2},
 	}
 
-	c := NewMatrix(4, 4)
-	c = [][]float64{
+	c := Matrix{
 		{2, 3, 4, 5},
 		{6, 7, 8, 9},
 		{8, 7, 6, 5},
@@ -79,24 +78,21 @@ func TestEqual(t *testing.T) {
 func TestMultiply(t *testing.T) {
 	is := assert.New(t)
 
-	a := NewMatrix(4, 4)
-	a = [][]float64{
+	a := Matrix{
 		{1, 2, 3, 4},
 		{5, 6, 7, 8},
 		{9, 8, 7, 6},
 		{5, 4, 3, 2},
 	}
 
-	b := NewMatrix(4, 4)
-	b = [][]float64{
+	b := Matrix{
 		{-2, 1, 2, 3},
 		{3, 2, 1, -1},
 		{4, 3, 6, 5},
 		{1, 2, 7, 8},
 	}
 
-	expected := NewMatrix(4, 4)
-	expected = [][]float64{
+	expected := Matrix{
 		{20, 22, 50, 48},
 		{44, 54, 114, 108},
 		{40, 58, 110, 102},
@@ -105,4 +101,21 @@ func TestMultiply(t *testing.T) {
 	mult, err := a.Multiply(b)
 	is.NoError(err)
 	is.True(mult.Equal(expected))
+}
+
+func TestMultiplyTuple(t *testing.T) {
+	is := assert.New(t)
+
+	a := Matrix{
+		{1, 2, 3, 4},
+		{2, 4, 4, 2},
+		{8, 6, 4, 1},
+		{0, 0, 0, 1},
+	}
+	b := tuple.NewPoint(1, 2, 3)
+	expected := tuple.NewPoint(18, 24, 33)
+
+	res, err := a.MultiplyTuple(b)
+	is.NoError(err)
+	is.True(res.Equal(expected))
 }
