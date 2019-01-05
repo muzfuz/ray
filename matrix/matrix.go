@@ -31,11 +31,6 @@ func Identity() Matrix {
 	}
 }
 
-// At retrieves the values at a given row / column coordinate
-func (m Matrix) At(r, c int) float64 {
-	return m[r][c]
-}
-
 // Equal will compare two instances and return true if they are the same
 func (m Matrix) Equal(m2 Matrix) bool {
 	if m.rows() != m2.rows() || m.cols() != m2.cols() {
