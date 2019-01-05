@@ -119,3 +119,40 @@ func TestMultiplyTuple(t *testing.T) {
 	is.NoError(err)
 	is.True(res.Equal(expected))
 }
+
+func TestIdentityMatrix(t *testing.T) {
+	is := assert.New(t)
+
+	a := Matrix{
+		{0, 1, 2, 4},
+		{1, 2, 4, 8},
+		{2, 4, 8, 16},
+		{4, 8, 16, 32},
+	}
+
+	res, err := a.Multiply(Identity())
+
+	is.NoError(err)
+	is.Equal(res, a)
+}
+
+func TestTranspose(t *testing.T) {
+	is := assert.New(t)
+
+	a := Matrix{
+		{0, 9, 3, 0},
+		{9, 8, 0, 8},
+		{1, 8, 5, 3},
+		{0, 0, 5, 8},
+	}
+
+	tnsps := Matrix{
+		{0, 9, 1, 0},
+		{9, 8, 8, 0},
+		{3, 0, 5, 5},
+		{0, 8, 3, 8},
+	}
+
+	is.Equal(tnsps, a.Transpose())
+	is.Equal(Identity(), Identity().Transpose())
+}

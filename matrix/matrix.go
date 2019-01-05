@@ -2,7 +2,6 @@ package matrix
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/muzfuz/ray/tuple"
 
@@ -20,6 +19,16 @@ func NewMatrix(rows, columns int) Matrix {
 		mat[c] = make([]float64, columns)
 	}
 	return mat
+}
+
+// Identity returns the identity matrix
+func Identity() Matrix {
+	return Matrix{
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1},
+	}
 }
 
 // At retrieves the values at a given row / column coordinate
@@ -48,7 +57,6 @@ func (m Matrix) Multiply(m2 Matrix) (Matrix, error) {
 		return Matrix{}, errors.New("cannot multiply two matrices with differing row + column sizes")
 	}
 	newMat := NewMatrix(m.rows(), m2.cols())
-	fmt.Println(newMat)
 	for r := range m {
 		for c := range m2[r] {
 			for i := 0; i < m.rows(); i++ { // uses m.rows() as delimiter, but could also use m2.cols()
@@ -78,6 +86,17 @@ func (m Matrix) MultiplyTuple(v tuple.Tuple) (tuple.Tuple, error) {
 		Z: mat[2][0],
 		W: mat[3][0],
 	}, nil
+}
+
+// Transpose returns the transpose of the current Matrix
+func (m Matrix) Transpose() Matrix {
+	mat := NewMatrix(m.cols(), m.rows())
+	for r := range m {
+		for c := range m[r] {
+			mat[c][r] = m[r][c]
+		}
+	}
+	return mat
 }
 
 func (m Matrix) rows() int {
