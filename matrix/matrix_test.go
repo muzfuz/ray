@@ -156,3 +156,48 @@ func TestTranspose(t *testing.T) {
 	is.Equal(tnsps, a.Transpose())
 	is.Equal(Identity(), Identity().Transpose())
 }
+
+func TestDeterminant(t *testing.T) {
+	is := assert.New(t)
+
+	mat := Matrix{
+		{1, 5},
+		{-3, 2},
+	}
+
+	d, err := mat.Determinant()
+	is.NoError(err)
+	is.Equal(17.0, d)
+
+	mat = NewMatrix(3, 3)
+	_, err = mat.Determinant()
+	is.Error(err)
+}
+
+func TestSubmatrix(t *testing.T) {
+	is := assert.New(t)
+
+	mat3 := Matrix{
+		{1, 5, 0},
+		{-3, 2, 7},
+		{0, 6, -3},
+	}
+	e := Matrix{
+		{-3, 2},
+		{0, 6},
+	}
+	is.Equal(e, mat3.Submatrix(0, 2))
+
+	mat4 := Matrix{
+		{-6, 1, 1, 6},
+		{-8, 5, 8, 6},
+		{-1, 0, 8, 2},
+		{-7, 1, -1, 1},
+	}
+	e2 := Matrix{
+		{-6, 1, 6},
+		{-8, 8, 6},
+		{-7, -1, 1},
+	}
+	is.Equal(e2, mat4.Submatrix(2, 1))
+}

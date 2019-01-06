@@ -94,6 +94,25 @@ func (m Matrix) Transpose() Matrix {
 	return mat
 }
 
+// Determinant returns the determinant of a 2x2 submatrix
+func (m Matrix) Determinant() (float64, error) {
+	if m.rows() != 2 || m.cols() != 2 {
+		return 0.0, errors.New("can only find the determinant of a 2x2 matrix")
+	}
+	return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0]), nil
+}
+
+// Submatrix returns a new matrix with
+// a given column and row sliced off the original matrix
+func (m Matrix) Submatrix(row, col int) Matrix {
+	mat := NewMatrix(m.rows()-1, m.cols()-1)
+	tmp := append(m[:row], m[row+1:]...)
+	for c := range tmp {
+		mat[c] = append(tmp[c][:col], tmp[c][col+1:]...)
+	}
+	return mat
+}
+
 func (m Matrix) rows() int {
 	return len(m)
 }
