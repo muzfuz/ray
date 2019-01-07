@@ -2,6 +2,7 @@ package matrix
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/muzfuz/ray/tuple"
 
@@ -94,12 +95,18 @@ func (m Matrix) Transpose() Matrix {
 	return mat
 }
 
-// Determinant returns the determinant of a 2x2 submatrix
-func (m Matrix) Determinant() (float64, error) {
-	if m.rows() != 2 || m.cols() != 2 {
-		return 0.0, errors.New("can only find the determinant of a 2x2 matrix")
+// Determinant returns the determinant of either
+// a 2x2 submatrix, or a larger one. The calculations
+// are slightly different depending on which is found.
+func (m Matrix) Determinant() float64 {
+	if m.rows() == 2 && m.cols() == 2 {
+		return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0])
 	}
-	return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0]), nil
+	det := 0.0
+	for i, val := range m[0] {
+		det += val * m.Cofactor(0, i)
+	}
+	return det
 }
 
 // Submatrix returns a new matrix with
@@ -117,18 +124,43 @@ func (m Matrix) Submatrix(row, col int) Matrix {
 }
 
 // Minor calculates the determinant of a submatrix
-func (m Matrix) Minor(row, col int) (float64, error) {
+func (m Matrix) Minor(row, col int) float64 {
 	return m.Submatrix(row, col).Determinant()
 }
 
 // Cofactor first calculates the Minor and then
 // determines wether its appropriate to negate the result.
-func (m Matrix) Cofactor(row, col int) (float64, error) {
-	min, err := m.Minor(row, col)
+func (m Matrix) Cofactor(row, col int) float64 {
+	min := m.Minor(row, col)
 	if (row+col)%2 == 0 {
-		return min, err
+		return min
 	}
-	return -min, err
+	return -min
+}
+
+// Invertible uses the determinant to determine wether
+// the matrix is invertible.
+func (m Matrix) Invertible() bool {
+	if float.Equal(0.0, m.Determinant()) {
+		return false
+	}
+	return true
+}
+
+// Inverse determines the inverse of a matrix
+func (m Matrix) Inverse() (Matrix, error) {
+	if !m.Invertible() {
+		return Matrix{}, fmt.Errorf("matrix %#v is not invertible", m)
+	}
+	m2 := NewMatrix(m.rows(), m.cols())
+	det := m.Determinant()
+	for r := range m {
+		for c := range m[r] {
+			cof := m.Cofactor(r, c)
+			m2[c][r] = cof / det
+		}
+	}
+	return m2, nil
 }
 
 func (m Matrix) rows() int {

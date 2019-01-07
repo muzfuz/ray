@@ -165,13 +165,48 @@ func TestDeterminant(t *testing.T) {
 		{-3, 2},
 	}
 
-	d, err := mat.Determinant()
-	is.NoError(err)
+	d := mat.Determinant()
 	is.Equal(17.0, d)
+}
 
-	mat = NewMatrix(3, 3)
-	_, err = mat.Determinant()
-	is.Error(err)
+func TestDeterminant3by3(t *testing.T) {
+	is := assert.New(t)
+
+	a := Matrix{
+		{1, 2, 6},
+		{-5, 8, -4},
+		{2, 6, 4},
+	}
+	c := a.Cofactor(0, 0)
+	is.Equal(56.0, c)
+	c = a.Cofactor(0, 1)
+	is.Equal(12.0, c)
+	c = a.Cofactor(0, 2)
+	is.Equal(-46.0, c)
+	d := a.Determinant()
+	is.Equal(-196.0, d)
+}
+
+func TestDeterminant4by4(t *testing.T) {
+	is := assert.New(t)
+
+	a := Matrix{
+		{-2, -8, 3, 5},
+		{-3, 1, 7, 3},
+		{1, 2, -9, 6},
+		{-6, 7, 7, -9},
+	}
+
+	c := a.Cofactor(0, 0)
+	is.Equal(690.0, c)
+	c = a.Cofactor(0, 1)
+	is.Equal(447.0, c)
+	c = a.Cofactor(0, 2)
+	is.Equal(210.0, c)
+	c = a.Cofactor(0, 3)
+	is.Equal(51.0, c)
+	d := a.Determinant()
+	is.Equal(-4071.0, d)
 }
 
 func TestSubmatrix(t *testing.T) {
@@ -211,12 +246,10 @@ func TestMinor(t *testing.T) {
 		{6, -1, 5},
 	}
 
-	b, err := m.Submatrix(1, 0).Determinant()
-	is.NoError(err)
+	b := m.Submatrix(1, 0).Determinant()
 	is.Equal(25.0, b)
 
-	min, err := m.Minor(1, 0)
-	is.NoError(err)
+	min := m.Minor(1, 0)
 	is.Equal(25.0, min)
 }
 
@@ -229,17 +262,124 @@ func TestCofactor(t *testing.T) {
 		{6, -1, 5},
 	}
 
-	min, err := a.Minor(0, 0)
-	is.NoError(err)
+	min := a.Minor(0, 0)
 	is.Equal(-12.0, min)
-	cof, err := a.Cofactor(0, 0)
-	is.NoError(err)
+	cof := a.Cofactor(0, 0)
 	is.Equal(-12.0, cof)
 
-	min, err = a.Minor(1, 0)
-	is.NoError(err)
+	min = a.Minor(1, 0)
 	is.Equal(25.0, min)
-	cof, err = a.Cofactor(1, 0)
-	is.NoError(err)
+	cof = a.Cofactor(1, 0)
 	is.Equal(-25.0, cof)
+}
+
+func TestInvertible(t *testing.T) {
+	is := assert.New(t)
+	a := Matrix{
+		{6, 4, 4, 4},
+		{5, 5, 7, 6},
+		{4, -9, 3, -7},
+		{9, 1, 7, -6},
+	}
+	is.Equal(-2120.0, a.Determinant())
+	is.True(a.Invertible())
+
+	b := Matrix{
+		{-4, 2, -2, -3},
+		{9, 6, 2, 6},
+		{0, -5, 1, -5},
+		{0, 0, 0, 0},
+	}
+	is.Equal(0.0, b.Determinant())
+	is.False(b.Invertible())
+}
+
+func TestInverse(t *testing.T) {
+	is := assert.New(t)
+
+	a := Matrix{
+		{-5, 2, 6, -8},
+		{1, -5, 1, 8},
+		{7, 7, -6, -7},
+		{1, -3, 7, 4},
+	}
+
+	e := Matrix{
+		{0.21805, 0.45113, 0.24060, -0.04511},
+		{-0.80827, -1.45677, -0.44361, 0.52068},
+		{-0.07895, -0.22368, -0.05263, 0.19737},
+		{-0.52256, -0.81391, -0.30075, 0.30639},
+	}
+
+	is.Equal(532.0, a.Determinant())
+	is.Equal(-160.0, a.Cofactor(2, 3))
+	is.Equal(105.0, a.Cofactor(3, 2))
+
+	b, err := a.Inverse()
+	is.NoError(err)
+	is.Equal(-160.0/532.0, b[3][2])
+	is.Equal(105.0/532.0, b[2][3])
+	is.True(b.Equal(e))
+}
+
+func TestInverseAnother(t *testing.T) {
+	is := assert.New(t)
+
+	a := Matrix{
+		{8, -5, 9, 2},
+		{7, 5, 6, 1},
+		{-6, 0, 9, 6},
+		{-3, 0, -9, -4},
+	}
+	e1 := Matrix{
+		{-0.15385, -0.15385, -0.28205, -0.53846},
+		{-0.07692, 0.12308, 0.02564, 0.03077},
+		{0.35897, 0.35897, 0.43590, 0.92308},
+		{-0.69231, -0.69231, -0.76923, -1.92308},
+	}
+	res1, err := a.Inverse()
+	is.NoError(err)
+	is.True(res1.Equal(e1))
+
+	b := Matrix{
+		{9, 3, 0, 9},
+		{-5, -2, -6, -3},
+		{-4, 9, 6, 4},
+		{-7, 6, 6, 2},
+	}
+	e2 := Matrix{
+		{-0.04074, -0.07778, 0.14444, -0.22222},
+		{-0.07778, 0.03333, 0.36667, -0.33333},
+		{-0.02901, -0.14630, -0.10926, 0.12963},
+		{0.17778, 0.06667, -0.26667, 0.33333},
+	}
+	res2, err := b.Inverse()
+	is.NoError(err)
+	is.True(res2.Equal(e2))
+}
+
+func TestMultiplyProductByInverse(t *testing.T) {
+	is := assert.New(t)
+
+	a := Matrix{
+		{3, -9, 7, 3},
+		{3, -8, 2, -9},
+		{-4, 4, 4, 1},
+		{-6, 5, -1, 1},
+	}
+	b := Matrix{
+		{8, 2, 2, 2},
+		{3, -1, 7, 0},
+		{7, 0, 5, 4},
+		{6, -2, 0, 5},
+	}
+	c, err := a.Multiply(b)
+	is.NoError(err)
+
+	inv, err := b.Inverse()
+	is.NoError(err)
+
+	res, err := c.Multiply(inv)
+	is.NoError(err)
+	is.True(a.Equal(res))
 }
