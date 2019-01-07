@@ -201,3 +201,21 @@ func TestSubmatrix(t *testing.T) {
 	}
 	is.Equal(e2, mat4.Submatrix(2, 1))
 }
+
+func TestMinor(t *testing.T) {
+	is := assert.New(t)
+
+	m := Matrix{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	}
+
+	b, err := m.Submatrix(1, 0).Determinant()
+	is.NoError(err)
+	is.Equal(25.0, b)
+
+	min, err := m.Minor(1, 0)
+	is.NoError(err)
+	is.Equal(25.0, min)
+}

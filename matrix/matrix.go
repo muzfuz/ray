@@ -105,12 +105,20 @@ func (m Matrix) Determinant() (float64, error) {
 // Submatrix returns a new matrix with
 // a given column and row sliced off the original matrix
 func (m Matrix) Submatrix(row, col int) Matrix {
-	mat := NewMatrix(m.rows()-1, m.cols()-1)
-	tmp := append(m[:row], m[row+1:]...)
-	for c := range tmp {
-		mat[c] = append(tmp[c][:col], tmp[c][col+1:]...)
+	mat := NewMatrix(m.rows(), m.cols())
+	for c := range m {
+		copy(mat[c], m[c])
+	}
+	mat = append(mat[:row], mat[row+1:]...)
+	for c := range mat {
+		mat[c] = append(mat[c][:col], mat[c][col+1:]...)
 	}
 	return mat
+}
+
+// Minor calculates the determinant of a submatrix
+func (m Matrix) Minor(row, col int) (float64, error) {
+	return m.Submatrix(row, col).Determinant()
 }
 
 func (m Matrix) rows() int {
