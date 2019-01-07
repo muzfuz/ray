@@ -219,3 +219,27 @@ func TestMinor(t *testing.T) {
 	is.NoError(err)
 	is.Equal(25.0, min)
 }
+
+func TestCofactor(t *testing.T) {
+	is := assert.New(t)
+
+	a := Matrix{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	}
+
+	min, err := a.Minor(0, 0)
+	is.NoError(err)
+	is.Equal(-12.0, min)
+	cof, err := a.Cofactor(0, 0)
+	is.NoError(err)
+	is.Equal(-12.0, cof)
+
+	min, err = a.Minor(1, 0)
+	is.NoError(err)
+	is.Equal(25.0, min)
+	cof, err = a.Cofactor(1, 0)
+	is.NoError(err)
+	is.Equal(-25.0, cof)
+}

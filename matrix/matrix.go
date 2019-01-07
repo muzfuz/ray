@@ -121,6 +121,16 @@ func (m Matrix) Minor(row, col int) (float64, error) {
 	return m.Submatrix(row, col).Determinant()
 }
 
+// Cofactor first calculates the Minor and then
+// determines wether its appropriate to negate the result.
+func (m Matrix) Cofactor(row, col int) (float64, error) {
+	min, err := m.Minor(row, col)
+	if (row+col)%2 == 0 {
+		return min, err
+	}
+	return -min, err
+}
+
 func (m Matrix) rows() int {
 	return len(m)
 }
