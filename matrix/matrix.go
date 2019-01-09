@@ -32,6 +32,16 @@ func Identity() Matrix {
 	}
 }
 
+// Translation returns a 4x4 translation matrix
+func Translation(x, y, z float64) Matrix {
+	return Matrix{
+		{1, 0, 0, x},
+		{0, 1, 0, y},
+		{0, 0, 1, z},
+		{0, 0, 0, 1},
+	}
+}
+
 // Equal will compare two instances and return true if they are the same
 func (m Matrix) Equal(m2 Matrix) bool {
 	if m.rows() != m2.rows() || m.cols() != m2.cols() {
@@ -103,8 +113,10 @@ func (m Matrix) Determinant() float64 {
 		return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0])
 	}
 	det := 0.0
-	for i, val := range m[0] {
-		det += val * m.Cofactor(0, i)
+	if len(m) > 0 {
+		for i, val := range m[0] {
+			det += val * m.Cofactor(0, i)
+		}
 	}
 	return det
 }

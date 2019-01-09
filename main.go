@@ -5,11 +5,22 @@ import (
 	"io/ioutil"
 
 	"github.com/muzfuz/ray/canvas"
+	"github.com/muzfuz/ray/matrix"
 
 	"github.com/muzfuz/ray/tuple"
 )
 
 func main() {
+	ident := matrix.Identity()
+	t, _ := ident.MultiplyTuple(tuple.NewVector(2, 1, 0))
+	fmt.Println(t)
+
+	ident[0][0] = 5.0
+	t2, _ := ident.MultiplyTuple(tuple.NewVector(2, 1, 0))
+	fmt.Println(t2)
+}
+
+func shootCannon() {
 	fmt.Println("setting up environment...")
 	c := canvas.NewCanvas(900, 550)
 	red := canvas.NewColor(1, 0, 0)

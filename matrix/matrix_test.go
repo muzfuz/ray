@@ -292,6 +292,10 @@ func TestInvertible(t *testing.T) {
 	}
 	is.Equal(0.0, b.Determinant())
 	is.False(b.Invertible())
+
+	c := Matrix{}
+	is.Equal(0.0, c.Determinant())
+	is.False(c.Invertible())
 }
 
 func TestInverse(t *testing.T) {
@@ -382,4 +386,30 @@ func TestMultiplyProductByInverse(t *testing.T) {
 	res, err := c.Multiply(inv)
 	is.NoError(err)
 	is.True(a.Equal(res))
+}
+
+func TestTranslation(t *testing.T) {
+	is := assert.New(t)
+
+	transform := Translation(5.0, -3.0, 2.0)
+	p := tuple.NewPoint(-3.0, 4.0, 5.0)
+
+	// Multiply by translation matrix
+	e := tuple.NewPoint(2.0, 1.0, 7.0)
+	res, err := transform.MultiplyTuple(p)
+	is.NoError(err)
+	is.Equal(e, res)
+
+	// Multiply by the inverse of a translation matrix
+	inv, _ := transform.Inverse()
+	e2 := tuple.NewPoint(-8.0, 7.0, 3.0)
+	res, err = inv.MultiplyTuple(p)
+	is.NoError(err)
+	is.Equal(e2, res)
+
+	// Translation does not affect vectors
+	v := tuple.NewVector(-3.0, 4.0, 5.0)
+	res, err = transform.MultiplyTuple(v)
+	is.NoError(err)
+	is.Equal(v, res)
 }
