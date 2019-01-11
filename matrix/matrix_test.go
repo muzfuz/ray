@@ -413,3 +413,27 @@ func TestTranslation(t *testing.T) {
 	is.NoError(err)
 	is.Equal(v, res)
 }
+
+func TestScaling(t *testing.T) {
+	is := assert.New(t)
+
+	scaling := Scaling(2.0, 3.0, 4.0)
+	p := tuple.NewPoint(-4.0, 6.0, 8.0)
+	e := tuple.NewPoint(-8.0, 18.0, 32.0)
+
+	// Scaling applies to points
+	res, _ := scaling.MultiplyTuple(p)
+	is.Equal(e, res)
+
+	// Scaling applies to vectors
+	v := tuple.NewVector(-4.0, 6.0, 8.0)
+	e2 := tuple.NewVector(-8.0, 18.0, 32.0)
+	res, _ = scaling.MultiplyTuple(v)
+	is.Equal(e2, res)
+
+	// Multiply by the inverse
+	inv, _ := scaling.Inverse()
+	e3 := tuple.NewVector(-2.0, 2.0, 2.0)
+	res, _ = inv.MultiplyTuple(v)
+	is.Equal(e3, res)
+}

@@ -42,6 +42,16 @@ func Translation(x, y, z float64) Matrix {
 	}
 }
 
+// Scaling returns a 4x4 scaling matrix
+func Scaling(x, y, z float64) Matrix {
+	return Matrix{
+		{x, 0, 0, 0},
+		{0, y, 0, 0},
+		{0, 0, z, 0},
+		{0, 0, 0, 1},
+	}
+}
+
 // Equal will compare two instances and return true if they are the same
 func (m Matrix) Equal(m2 Matrix) bool {
 	if m.rows() != m2.rows() || m.cols() != m2.cols() {
