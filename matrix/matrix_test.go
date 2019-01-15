@@ -437,3 +437,13 @@ func TestScaling(t *testing.T) {
 	res, _ = inv.MultiplyTuple(v)
 	is.Equal(e3, res)
 }
+
+func TestReflection(t *testing.T) {
+	is := assert.New(t)
+
+	scaling := Scaling(-1.0, 1.0, 1.0)
+	p := tuple.NewPoint(2.0, 3.0, 4.0)
+	e := tuple.NewPoint(-2.0, 3.0, 4.0)
+	res, _ := scaling.MultiplyTuple(p)
+	is.Equal(e, res)
+}
