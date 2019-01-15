@@ -3,6 +3,7 @@ package matrix
 import (
 	"errors"
 	"fmt"
+	"math"
 
 	"github.com/muzfuz/ray/tuple"
 
@@ -48,6 +49,36 @@ func Scaling(x, y, z float64) Matrix {
 		{x, 0, 0, 0},
 		{0, y, 0, 0},
 		{0, 0, z, 0},
+		{0, 0, 0, 1},
+	}
+}
+
+// RotationX returns a 4x4 rotation matrix on the X axis
+func RotationX(r float64) Matrix {
+	return Matrix{
+		{1, 0, 0, 0},
+		{0, math.Cos(r), -math.Sin(r), 0},
+		{0, math.Sin(r), math.Cos(r), 0},
+		{0, 0, 0, 1},
+	}
+}
+
+// RotationY returns a 4x4 rotation matrix on the Y axis
+func RotationY(r float64) Matrix {
+	return Matrix{
+		{math.Cos(r), 0, math.Sin(r), 0},
+		{0, 1, 0, 0},
+		{-math.Sin(r), 0, math.Cos(r), 0},
+		{0, 0, 0, 1},
+	}
+}
+
+// RotationZ returns a 4x4 rotation matrix on the Z axis
+func RotationZ(r float64) Matrix {
+	return Matrix{
+		{math.Cos(r), -math.Sin(r), 0, 0},
+		{math.Sin(r), math.Cos(r), 0, 0},
+		{0, 0, 1, 0},
 		{0, 0, 0, 1},
 	}
 }

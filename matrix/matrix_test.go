@@ -1,6 +1,7 @@
 package matrix
 
 import (
+	"math"
 	"testing"
 
 	"github.com/muzfuz/ray/tuple"
@@ -446,4 +447,71 @@ func TestReflection(t *testing.T) {
 	e := tuple.NewPoint(-2.0, 3.0, 4.0)
 	res, _ := scaling.MultiplyTuple(p)
 	is.Equal(e, res)
+}
+
+func TestRotationX(t *testing.T) {
+	is := assert.New(t)
+
+	// Rotating a point around the x axis
+	p := tuple.NewPoint(0, 1, 0)
+	// by a half quarter turn
+	halfQuarter := RotationX(math.Pi / 4)
+	hq, err := halfQuarter.MultiplyTuple(p)
+	is.NoError(err)
+	e := tuple.NewPoint(0, math.Sqrt(2.0)/2.0, math.Sqrt(2.0)/2.0)
+	is.True(hq.Equal(e))
+	// by a full quarter turn
+	fullQuarter := RotationX(math.Pi / 2)
+	fq, err := fullQuarter.MultiplyTuple(p)
+	is.NoError(err)
+	e2 := tuple.NewPoint(0, 0, 1)
+	is.True(fq.Equal(e2))
+
+	// Rotating a point in the inverse of the x axis
+	inv, err := halfQuarter.Inverse()
+	is.NoError(err)
+	i, err := inv.MultiplyTuple(p)
+	is.NoError(err)
+	e3 := tuple.NewPoint(0, math.Sqrt(2.0)/2.0, -math.Sqrt(2.0)/2.0)
+	is.True(i.Equal(e3))
+}
+
+func TestRotationY(t *testing.T) {
+	is := assert.New(t)
+
+	p := tuple.NewPoint(0, 0, 1)
+	halfQuarter := RotationY(math.Pi / 4.0)
+	fullQuarter := RotationY(math.Pi / 2.0)
+
+	//Half quarter turn
+	hq, err := halfQuarter.MultiplyTuple(p)
+	is.NoError(err)
+	e := tuple.NewPoint(math.Sqrt(2.0)/2.0, 0, math.Sqrt(2.0)/2.0)
+	is.True(hq.Equal(e))
+
+	// Full quarter turn
+	fq, err := fullQuarter.MultiplyTuple(p)
+	is.NoError(err)
+	e2 := tuple.NewPoint(1.0, 0.0, 0.0)
+	is.True(fq.Equal(e2))
+}
+
+func TestRotationZ(t *testing.T) {
+	is := assert.New(t)
+
+	p := tuple.NewPoint(0, 1, 0)
+	halfQuarter := RotationZ(math.Pi / 4.0)
+	fullQuarter := RotationZ(math.Pi / 2.0)
+
+	// Half quarter turn
+	hq, err := halfQuarter.MultiplyTuple(p)
+	is.NoError(err)
+	e := tuple.NewPoint(-math.Sqrt(2.0)/2.0, math.Sqrt(2.0)/2.0, 0)
+	is.True(hq.Equal(e))
+
+	// Full quarter turn
+	fq, err := fullQuarter.MultiplyTuple(p)
+	is.NoError(err)
+	e2 := tuple.NewPoint(-1.0, 0.0, 0.0)
+	is.True(fq.Equal(e2))
 }
