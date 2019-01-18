@@ -12,11 +12,11 @@ import (
 
 func main() {
 	ident := matrix.Identity()
-	t, _ := ident.MultiplyTuple(tuple.NewVector(2, 1, 0))
+	t := ident.MultiplyTuple(tuple.NewVector(2, 1, 0))
 	fmt.Println(t)
 
 	ident[0][0] = 5.0
-	t2, _ := ident.MultiplyTuple(tuple.NewVector(2, 1, 0))
+	t2 := ident.MultiplyTuple(tuple.NewVector(2, 1, 0))
 	fmt.Println(t2)
 }
 

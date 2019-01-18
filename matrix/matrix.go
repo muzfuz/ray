@@ -1,7 +1,6 @@
 package matrix
 
 import (
-	"errors"
 	"fmt"
 	"math"
 
@@ -109,10 +108,7 @@ func (m Matrix) Equal(m2 Matrix) bool {
 }
 
 // Multiply will take two matrices and multiply them
-func (m Matrix) Multiply(m2 Matrix) (Matrix, error) {
-	if m.cols() != m2.rows() {
-		return Matrix{}, errors.New("cannot multiply two matrices with differing row + column sizes")
-	}
+func (m Matrix) Multiply(m2 Matrix) Matrix {
 	newMat := NewMatrix(m.rows(), m2.cols())
 	for r := range m {
 		for c := range m2[r] {
@@ -121,11 +117,11 @@ func (m Matrix) Multiply(m2 Matrix) (Matrix, error) {
 			}
 		}
 	}
-	return newMat, nil
+	return newMat
 }
 
 // MultiplyTuple multiplies the matrix by a tuple
-func (m Matrix) MultiplyTuple(v tuple.Tuple) (tuple.Tuple, error) {
+func (m Matrix) MultiplyTuple(v tuple.Tuple) tuple.Tuple {
 	colMat := NewMatrix(4, 1)
 	colMat = Matrix{
 		{v.X},
@@ -133,16 +129,13 @@ func (m Matrix) MultiplyTuple(v tuple.Tuple) (tuple.Tuple, error) {
 		{v.Z},
 		{v.W},
 	}
-	mat, err := m.Multiply(colMat)
-	if err != nil {
-		return tuple.Tuple{}, err
-	}
+	mat := m.Multiply(colMat)
 	return tuple.Tuple{
 		X: mat[0][0],
 		Y: mat[1][0],
 		Z: mat[2][0],
 		W: mat[3][0],
-	}, nil
+	}
 }
 
 // Transpose returns the transpose of the current Matrix

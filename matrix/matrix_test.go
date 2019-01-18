@@ -99,8 +99,7 @@ func TestMultiply(t *testing.T) {
 		{40, 58, 110, 102},
 		{16, 26, 46, 42},
 	}
-	mult, err := a.Multiply(b)
-	is.NoError(err)
+	mult := a.Multiply(b)
 	is.True(mult.Equal(expected))
 }
 
@@ -116,8 +115,7 @@ func TestMultiplyTuple(t *testing.T) {
 	b := tuple.NewPoint(1, 2, 3)
 	expected := tuple.NewPoint(18, 24, 33)
 
-	res, err := a.MultiplyTuple(b)
-	is.NoError(err)
+	res := a.MultiplyTuple(b)
 	is.True(res.Equal(expected))
 }
 
@@ -131,9 +129,8 @@ func TestIdentityMatrix(t *testing.T) {
 		{4, 8, 16, 32},
 	}
 
-	res, err := a.Multiply(Identity())
+	res := a.Multiply(Identity())
 
-	is.NoError(err)
 	is.Equal(res, a)
 }
 
@@ -378,14 +375,12 @@ func TestMultiplyProductByInverse(t *testing.T) {
 		{7, 0, 5, 4},
 		{6, -2, 0, 5},
 	}
-	c, err := a.Multiply(b)
-	is.NoError(err)
+	c := a.Multiply(b)
 
 	inv, err := b.Inverse()
 	is.NoError(err)
 
-	res, err := c.Multiply(inv)
-	is.NoError(err)
+	res := c.Multiply(inv)
 	is.True(a.Equal(res))
 }
 
@@ -397,21 +392,18 @@ func TestTranslation(t *testing.T) {
 
 	// Multiply by translation matrix
 	e := tuple.NewPoint(2.0, 1.0, 7.0)
-	res, err := transform.MultiplyTuple(p)
-	is.NoError(err)
+	res := transform.MultiplyTuple(p)
 	is.Equal(e, res)
 
 	// Multiply by the inverse of a translation matrix
 	inv, _ := transform.Inverse()
 	e2 := tuple.NewPoint(-8.0, 7.0, 3.0)
-	res, err = inv.MultiplyTuple(p)
-	is.NoError(err)
+	res = inv.MultiplyTuple(p)
 	is.Equal(e2, res)
 
 	// Translation does not affect vectors
 	v := tuple.NewVector(-3.0, 4.0, 5.0)
-	res, err = transform.MultiplyTuple(v)
-	is.NoError(err)
+	res = transform.MultiplyTuple(v)
 	is.Equal(v, res)
 }
 
@@ -423,19 +415,19 @@ func TestScaling(t *testing.T) {
 	e := tuple.NewPoint(-8.0, 18.0, 32.0)
 
 	// Scaling applies to points
-	res, _ := scaling.MultiplyTuple(p)
+	res := scaling.MultiplyTuple(p)
 	is.Equal(e, res)
 
 	// Scaling applies to vectors
 	v := tuple.NewVector(-4.0, 6.0, 8.0)
 	e2 := tuple.NewVector(-8.0, 18.0, 32.0)
-	res, _ = scaling.MultiplyTuple(v)
+	res = scaling.MultiplyTuple(v)
 	is.Equal(e2, res)
 
 	// Multiply by the inverse
 	inv, _ := scaling.Inverse()
 	e3 := tuple.NewVector(-2.0, 2.0, 2.0)
-	res, _ = inv.MultiplyTuple(v)
+	res = inv.MultiplyTuple(v)
 	is.Equal(e3, res)
 }
 
@@ -445,7 +437,7 @@ func TestReflection(t *testing.T) {
 	scaling := Scaling(-1.0, 1.0, 1.0)
 	p := tuple.NewPoint(2.0, 3.0, 4.0)
 	e := tuple.NewPoint(-2.0, 3.0, 4.0)
-	res, _ := scaling.MultiplyTuple(p)
+	res := scaling.MultiplyTuple(p)
 	is.Equal(e, res)
 }
 
@@ -456,22 +448,19 @@ func TestRotationX(t *testing.T) {
 	p := tuple.NewPoint(0, 1, 0)
 	// by a half quarter turn
 	halfQuarter := RotationX(math.Pi / 4)
-	hq, err := halfQuarter.MultiplyTuple(p)
-	is.NoError(err)
+	hq := halfQuarter.MultiplyTuple(p)
 	e := tuple.NewPoint(0, math.Sqrt(2.0)/2.0, math.Sqrt(2.0)/2.0)
 	is.True(hq.Equal(e))
 	// by a full quarter turn
 	fullQuarter := RotationX(math.Pi / 2)
-	fq, err := fullQuarter.MultiplyTuple(p)
-	is.NoError(err)
+	fq := fullQuarter.MultiplyTuple(p)
 	e2 := tuple.NewPoint(0, 0, 1)
 	is.True(fq.Equal(e2))
 
 	// Rotating a point in the inverse of the x axis
 	inv, err := halfQuarter.Inverse()
 	is.NoError(err)
-	i, err := inv.MultiplyTuple(p)
-	is.NoError(err)
+	i := inv.MultiplyTuple(p)
 	e3 := tuple.NewPoint(0, math.Sqrt(2.0)/2.0, -math.Sqrt(2.0)/2.0)
 	is.True(i.Equal(e3))
 }
@@ -484,14 +473,12 @@ func TestRotationY(t *testing.T) {
 	fullQuarter := RotationY(math.Pi / 2.0)
 
 	//Half quarter turn
-	hq, err := halfQuarter.MultiplyTuple(p)
-	is.NoError(err)
+	hq := halfQuarter.MultiplyTuple(p)
 	e := tuple.NewPoint(math.Sqrt(2.0)/2.0, 0, math.Sqrt(2.0)/2.0)
 	is.True(hq.Equal(e))
 
 	// Full quarter turn
-	fq, err := fullQuarter.MultiplyTuple(p)
-	is.NoError(err)
+	fq := fullQuarter.MultiplyTuple(p)
 	e2 := tuple.NewPoint(1.0, 0.0, 0.0)
 	is.True(fq.Equal(e2))
 }
@@ -504,14 +491,12 @@ func TestRotationZ(t *testing.T) {
 	fullQuarter := RotationZ(math.Pi / 2.0)
 
 	// Half quarter turn
-	hq, err := halfQuarter.MultiplyTuple(p)
-	is.NoError(err)
+	hq := halfQuarter.MultiplyTuple(p)
 	e := tuple.NewPoint(-math.Sqrt(2.0)/2.0, math.Sqrt(2.0)/2.0, 0)
 	is.True(hq.Equal(e))
 
 	// Full quarter turn
-	fq, err := fullQuarter.MultiplyTuple(p)
-	is.NoError(err)
+	fq := fullQuarter.MultiplyTuple(p)
 	e2 := tuple.NewPoint(-1.0, 0.0, 0.0)
 	is.True(fq.Equal(e2))
 }
@@ -524,8 +509,7 @@ func TestShearingXY(t *testing.T) {
 	p := tuple.NewPoint(2.0, 3.0, 4.0)
 	e := tuple.NewPoint(5.0, 3.0, 4.0)
 
-	res, err := transform.MultiplyTuple(p)
-	is.NoError(err)
+	res := transform.MultiplyTuple(p)
 	is.Equal(res, e)
 }
 
@@ -537,8 +521,7 @@ func TestShearingXZ(t *testing.T) {
 	p := tuple.NewPoint(2.0, 3.0, 4.0)
 	e := tuple.NewPoint(6.0, 3.0, 4.0)
 
-	res, err := transform.MultiplyTuple(p)
-	is.NoError(err)
+	res := transform.MultiplyTuple(p)
 	is.Equal(res, e)
 }
 
@@ -550,8 +533,7 @@ func TestShearingYX(t *testing.T) {
 	p := tuple.NewPoint(2.0, 3.0, 4.0)
 	e := tuple.NewPoint(2.0, 5.0, 4.0)
 
-	res, err := transform.MultiplyTuple(p)
-	is.NoError(err)
+	res := transform.MultiplyTuple(p)
 	is.Equal(res, e)
 }
 
@@ -563,8 +545,7 @@ func TestShearingYZ(t *testing.T) {
 	p := tuple.NewPoint(2.0, 3.0, 4.0)
 	e := tuple.NewPoint(2.0, 7.0, 4.0)
 
-	res, err := transform.MultiplyTuple(p)
-	is.NoError(err)
+	res := transform.MultiplyTuple(p)
 	is.Equal(res, e)
 }
 
@@ -576,8 +557,7 @@ func TestShearingZX(t *testing.T) {
 	p := tuple.NewPoint(2.0, 3.0, 4.0)
 	e := tuple.NewPoint(2.0, 3.0, 6.0)
 
-	res, err := transform.MultiplyTuple(p)
-	is.NoError(err)
+	res := transform.MultiplyTuple(p)
 	is.Equal(res, e)
 }
 
@@ -589,8 +569,7 @@ func TestShearingZY(t *testing.T) {
 	p := tuple.NewPoint(2.0, 3.0, 4.0)
 	e := tuple.NewPoint(2.0, 3.0, 7.0)
 
-	res, err := transform.MultiplyTuple(p)
-	is.NoError(err)
+	res := transform.MultiplyTuple(p)
 	is.Equal(res, e)
 }
 
@@ -603,15 +582,15 @@ func TestIndividualTransformations(t *testing.T) {
 	b := Scaling(5.0, 5.0, 5.0)
 	c := Translation(10.0, 5.0, 7.0)
 
-	p2, _ := a.MultiplyTuple(p)
+	p2 := a.MultiplyTuple(p)
 	e2 := tuple.NewPoint(1.0, -1.0, 0)
 	is.True(p2.Equal(e2))
 
-	p3, _ := b.MultiplyTuple(p2)
+	p3 := b.MultiplyTuple(p2)
 	e3 := tuple.NewPoint(5.0, -5.0, 0.0)
 	is.True(p3.Equal(e3))
 
-	p4, _ := c.MultiplyTuple(p3)
+	p4 := c.MultiplyTuple(p3)
 	e4 := tuple.NewPoint(15.0, 0.0, 7.0)
 	is.True(p4.Equal(e4))
 }
@@ -624,10 +603,9 @@ func TestChainedTransformations(t *testing.T) {
 	b := Scaling(5.0, 5.0, 5.0)
 	c := Translation(10.0, 5.0, 7.0)
 
-	cb, _ := c.Multiply(b)
-	tr, _ := cb.Multiply(a)
+	tr := c.Multiply(b).Multiply(a)
 
 	e := tuple.NewPoint(15.0, 0.0, 7.0)
-	res, _ := tr.MultiplyTuple(p)
+	res := tr.MultiplyTuple(p)
 	is.Equal(e, res)
 }
