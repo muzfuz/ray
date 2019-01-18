@@ -515,3 +515,119 @@ func TestRotationZ(t *testing.T) {
 	e2 := tuple.NewPoint(-1.0, 0.0, 0.0)
 	is.True(fq.Equal(e2))
 }
+
+func TestShearingXY(t *testing.T) {
+	is := assert.New(t)
+
+	transform := Shearing(1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+
+	p := tuple.NewPoint(2.0, 3.0, 4.0)
+	e := tuple.NewPoint(5.0, 3.0, 4.0)
+
+	res, err := transform.MultiplyTuple(p)
+	is.NoError(err)
+	is.Equal(res, e)
+}
+
+func TestShearingXZ(t *testing.T) {
+	is := assert.New(t)
+
+	transform := Shearing(0.0, 1.0, 0.0, 0.0, 0.0, 0.0)
+
+	p := tuple.NewPoint(2.0, 3.0, 4.0)
+	e := tuple.NewPoint(6.0, 3.0, 4.0)
+
+	res, err := transform.MultiplyTuple(p)
+	is.NoError(err)
+	is.Equal(res, e)
+}
+
+func TestShearingYX(t *testing.T) {
+	is := assert.New(t)
+
+	transform := Shearing(0.0, 0.0, 1.0, 0.0, 0.0, 0.0)
+
+	p := tuple.NewPoint(2.0, 3.0, 4.0)
+	e := tuple.NewPoint(2.0, 5.0, 4.0)
+
+	res, err := transform.MultiplyTuple(p)
+	is.NoError(err)
+	is.Equal(res, e)
+}
+
+func TestShearingYZ(t *testing.T) {
+	is := assert.New(t)
+
+	transform := Shearing(0.0, 0.0, 0.0, 1.0, 0.0, 0.0)
+
+	p := tuple.NewPoint(2.0, 3.0, 4.0)
+	e := tuple.NewPoint(2.0, 7.0, 4.0)
+
+	res, err := transform.MultiplyTuple(p)
+	is.NoError(err)
+	is.Equal(res, e)
+}
+
+func TestShearingZX(t *testing.T) {
+	is := assert.New(t)
+
+	transform := Shearing(0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
+
+	p := tuple.NewPoint(2.0, 3.0, 4.0)
+	e := tuple.NewPoint(2.0, 3.0, 6.0)
+
+	res, err := transform.MultiplyTuple(p)
+	is.NoError(err)
+	is.Equal(res, e)
+}
+
+func TestShearingZY(t *testing.T) {
+	is := assert.New(t)
+
+	transform := Shearing(0.0, 0.0, 0.0, 0.0, 0.0, 1.0)
+
+	p := tuple.NewPoint(2.0, 3.0, 4.0)
+	e := tuple.NewPoint(2.0, 3.0, 7.0)
+
+	res, err := transform.MultiplyTuple(p)
+	is.NoError(err)
+	is.Equal(res, e)
+}
+
+func TestIndividualTransformations(t *testing.T) {
+	is := assert.New(t)
+
+	p := tuple.NewPoint(1.0, 0.0, 1.0)
+
+	a := RotationX(math.Pi / 2.0)
+	b := Scaling(5.0, 5.0, 5.0)
+	c := Translation(10.0, 5.0, 7.0)
+
+	p2, _ := a.MultiplyTuple(p)
+	e2 := tuple.NewPoint(1.0, -1.0, 0)
+	is.True(p2.Equal(e2))
+
+	p3, _ := b.MultiplyTuple(p2)
+	e3 := tuple.NewPoint(5.0, -5.0, 0.0)
+	is.True(p3.Equal(e3))
+
+	p4, _ := c.MultiplyTuple(p3)
+	e4 := tuple.NewPoint(15.0, 0.0, 7.0)
+	is.True(p4.Equal(e4))
+}
+
+func TestChainedTransformations(t *testing.T) {
+	is := assert.New(t)
+
+	p := tuple.NewPoint(1.0, 0.0, 1.0)
+	a := RotationX(math.Pi / 2.0)
+	b := Scaling(5.0, 5.0, 5.0)
+	c := Translation(10.0, 5.0, 7.0)
+
+	cb, _ := c.Multiply(b)
+	tr, _ := cb.Multiply(a)
+
+	e := tuple.NewPoint(15.0, 0.0, 7.0)
+	res, _ := tr.MultiplyTuple(p)
+	is.Equal(e, res)
+}

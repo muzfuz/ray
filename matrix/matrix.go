@@ -83,6 +83,16 @@ func RotationZ(r float64) Matrix {
 	}
 }
 
+// Shearing returns a 4x4 shearing matrix
+func Shearing(xy, xx, yx, yz, zx, zy float64) Matrix {
+	return Matrix{
+		{1, xy, xx, 0},
+		{yx, 1, yz, 0},
+		{zx, zy, 1, 0},
+		{0, 0, 0, 1},
+	}
+}
+
 // Equal will compare two instances and return true if they are the same
 func (m Matrix) Equal(m2 Matrix) bool {
 	if m.rows() != m2.rows() || m.cols() != m2.cols() {
