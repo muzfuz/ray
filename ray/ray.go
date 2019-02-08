@@ -1,9 +1,9 @@
-package rays
+package ray
 
 import (
 	"errors"
 
-	"github.com/muzfuz/ray/tuple"
+	"github.com/muzfuz/raytrace/tuple"
 )
 
 // Ray is a representation of a point in space and a direction

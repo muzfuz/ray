@@ -1,7 +1,7 @@
 package tuple
 
 import (
-	"github.com/muzfuz/ray/float"
+	"github.com/muzfuz/raytrace/float"
 )
 
 // Tuple is a representation of either a point in space,

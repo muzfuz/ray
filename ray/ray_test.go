@@ -1,9 +1,9 @@
-package rays
+package ray
 
 import (
 	"testing"
 
-	"github.com/muzfuz/ray/tuple"
+	"github.com/muzfuz/raytrace/tuple"
 
 	"github.com/stretchr/testify/assert"
 )

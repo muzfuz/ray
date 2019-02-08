@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/muzfuz/ray/tuple"
+	"github.com/muzfuz/raytrace/tuple"
 
 	"github.com/stretchr/testify/assert"
 )

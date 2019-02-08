@@ -1,6 +1,6 @@
 package tuple
 
-import "github.com/muzfuz/ray/float"
+import "github.com/muzfuz/raytrace/float"
 
 const pointW = 1.0
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"math"
 
-	"github.com/muzfuz/ray/float"
+	"github.com/muzfuz/raytrace/float"
 )
 
 const vectorW = 0.0

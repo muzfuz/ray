@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/muzfuz/ray/tuple"
+	"github.com/muzfuz/raytrace/tuple"
 
-	"github.com/muzfuz/ray/float"
+	"github.com/muzfuz/raytrace/float"
 )
 
 // Matrix embodies the data and methods to do

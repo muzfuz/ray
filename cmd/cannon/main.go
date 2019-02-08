@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/muzfuz/ray/canvas"
-	"github.com/muzfuz/ray/matrix"
+	"github.com/muzfuz/raytrace/canvas"
+	"github.com/muzfuz/raytrace/matrix"
 
-	"github.com/muzfuz/ray/tuple"
+	"github.com/muzfuz/raytrace/tuple"
 )
 
 func main() {

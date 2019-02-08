@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/muzfuz/ray/tuple"
+	"github.com/muzfuz/raytrace/tuple"
 )
 
 // Color is a representation of 3 colors
