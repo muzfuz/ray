@@ -25,3 +25,8 @@ func New(origin, direction tuple.Tuple) (Ray, error) {
 		Direction: direction,
 	}, nil
 }
+
+// Position finds a points new position after traveling along a vector for t time
+func (r Ray) Position(t float64) tuple.Tuple {
+	return r.Origin.Add(r.Direction.Scale(t))
+}
